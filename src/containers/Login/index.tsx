@@ -27,8 +27,9 @@ const Login = () => {
   });
 
   const onSubmit = handleSubmit(async (form) => {
-    const res = await userService.login(form);
-    setIsLoading(false);
+    const res = await userService
+      .login(form)
+      .finally(() => setIsLoading(false));
 
     setToken(res.accessToken);
     navigate("/");

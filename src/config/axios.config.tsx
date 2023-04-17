@@ -1,4 +1,5 @@
 import { AppContext } from "@context/AppContext";
+import { useAppToast } from "@hooks/useSuccessToast";
 import { useTokenCookies } from "@hooks/useTokenCookies";
 import axios, {
   AxiosError,
@@ -27,6 +28,7 @@ export const AxiosInterceptorHOC = ({
   children,
 }: IAxiosInterceptorHOCProps) => {
   const { setIsLoading } = useContext(AppContext);
+  const { showToast } = useAppToast();
   const { token } = useTokenCookies();
 
   useEffect(() => {
@@ -49,6 +51,8 @@ export const AxiosInterceptorHOC = ({
     };
 
     const errResInterceptor = (error: any) => {
+      const erMsg = error?.response?.data?.message || "Aconteceu um problema";
+      showToast({ title: erMsg, status: "error" });
       return Promise.reject(error);
     };
 
