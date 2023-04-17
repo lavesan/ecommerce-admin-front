@@ -7,16 +7,18 @@ import {
   HiShoppingCart,
   HiOfficeBuilding,
   HiPresentationChartLine,
-  HiLogout,
   HiUserGroup,
   HiThumbUp,
 } from "react-icons/hi";
+import { AiOutlinePoweroff } from "react-icons/ai";
 
 import { SidebarLink } from "./SidebarLink";
 import { useAppContext } from "@hooks/useAppContext";
 import { forwardRef } from "react";
 
-const HiLogoutWithRef = forwardRef((props, ref) => <HiLogout {...props} />);
+const AiOutlinePoweroffRef = forwardRef((props, ref) => (
+  <AiOutlinePoweroff {...props} />
+));
 
 export const Sidebar = () => {
   const { logout } = useAppContext();
@@ -88,7 +90,7 @@ export const Sidebar = () => {
         marginBottom={1}
       />
       <IconButton
-        as={HiLogoutWithRef}
+        as={AiOutlinePoweroffRef}
         aria-label="Logout"
         onClick={logout}
         alignSelf="center"

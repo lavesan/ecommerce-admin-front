@@ -1,5 +1,5 @@
-import { useForm, UseFormRegisterReturn } from "react-hook-form";
-import { Flex, Card, Input, Button } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { Card, Button, Heading } from "@chakra-ui/react";
 
 import { IUserLoginRequest } from "@models/IUserLoginRequest";
 import { UserService } from "@services/user.service";
@@ -37,9 +37,13 @@ const Login = () => {
   return (
     <>
       <Card as="form" onSubmit={onSubmit} padding={4}>
+        <Heading as="h1" marginBottom={4}>
+          Admin ecommerce
+        </Heading>
         <AppInput
           aria-label="email"
           label="Email"
+          type="email"
           {...register("email")}
           errorMsg={errors.email?.message}
           style={{ marginBottom: 4 }}
@@ -47,11 +51,14 @@ const Login = () => {
         <AppInput
           aria-label="password"
           label="Senha"
+          type="password"
           {...register("password")}
           errorMsg={errors.password?.message}
           style={{ marginBottom: 4 }}
         />
-        <Button type="submit">Entrar</Button>
+        <Button type="submit" colorScheme="green">
+          Entrar
+        </Button>
       </Card>
     </>
   );
