@@ -8,6 +8,8 @@ export interface IProductAdditional {
   value: number;
   isDisabled: boolean;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   productAdditionalCategory?: IProductAdditionalCategory;
   orderProductAdditional?: IOrderProductAdditional[];
 }

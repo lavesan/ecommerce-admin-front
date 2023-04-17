@@ -12,6 +12,8 @@ export interface IProductAdditionalCategory {
   isDisabled: boolean;
   isOptional: boolean;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   productAdditionals?: IProductAdditional[];
   product?: IProduct;
 }

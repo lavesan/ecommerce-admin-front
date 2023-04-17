@@ -9,6 +9,8 @@ export interface IPromotion {
   imageKey: string;
   weekDay: WeekDay;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   enterprise?: IEnterprise;
   promotionProducts?: IPromotionProduct[];
 }

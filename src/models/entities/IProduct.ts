@@ -1,6 +1,7 @@
 import { ICategory } from "./ICategory";
 import { IOrderProduct } from "./IOrderProduct";
 import { IProductAdditionalCategory } from "./IProductAdditionalCategory";
+import { IPromotionProduct } from "./IPromotionProduct";
 
 export interface IProduct {
   id: string;
@@ -13,8 +14,10 @@ export interface IProduct {
   sellPoints: number;
   isDisabled: boolean;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   category?: ICategory;
   productAdditionalCategory?: IProductAdditionalCategory[];
   orderProducts?: IOrderProduct[];
-  promotionProduct?;
+  promotionProduct?: IPromotionProduct;
 }

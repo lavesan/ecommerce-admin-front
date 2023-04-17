@@ -12,6 +12,8 @@ export interface IAddress {
   city: string;
   shortName: string;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   client?: IClient;
   order?: IOrder;
 }

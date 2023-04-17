@@ -8,6 +8,8 @@ export interface ICategory {
   imageKey: string;
   isDisabled: boolean;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   products?: IProduct[];
   enterprise?: IEnterprise;
 }

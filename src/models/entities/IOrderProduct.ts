@@ -8,6 +8,8 @@ export interface IOrderProduct {
   value: number;
   points: number;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   order?: IOrder;
   product?: IProduct;
   additionals?: IOrderProductAdditional[];

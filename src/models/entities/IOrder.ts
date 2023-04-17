@@ -14,6 +14,8 @@ export interface IOrder {
   moneyExchange: number;
   status: OrderStatus;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   orderProducts?: IOrderProduct[];
   address?: IAddress;
   client?: IClient;

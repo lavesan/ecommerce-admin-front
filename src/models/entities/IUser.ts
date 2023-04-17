@@ -7,5 +7,7 @@ export interface IUser {
   password: string;
   isAdmin: boolean;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   enterprises?: IEnterprise[];
 }

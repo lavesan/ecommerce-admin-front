@@ -9,6 +9,8 @@ export interface IClient {
   cpf: string;
   points: number;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   addresses?: IAddress[];
   orders?: IOrder[];
 }

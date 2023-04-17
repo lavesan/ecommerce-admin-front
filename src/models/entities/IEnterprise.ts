@@ -19,6 +19,8 @@ export interface IEnterprise {
   city: string;
   imageKey: string;
   created_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
   categories?: ICategory[];
   orders?: IOrder[];
   freights?: IFreight[];
