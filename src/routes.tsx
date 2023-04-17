@@ -16,6 +16,8 @@ import { useAuthenticate } from "@hooks/useAuthenticate";
 import EnterpriseCreateOrEdit from "@containers/EnterpriseCreateOrEdit";
 import CategoryCreateOrEdit from "@containers/CategoryCreateOrEdit";
 import ProductCreateOrEdit from "@containers/ProductCreateOrEdit";
+import OrderView from "@containers/OrderView";
+import ClientCreateOrEdit from "@containers/ClientCreateOrEdit";
 
 const Router = () => {
   useAuthenticate();
@@ -42,7 +44,8 @@ const Router = () => {
         <Route path="/empresas" element={<Enterprises />} />
         <Route path="/empresas/criar" element={<EnterpriseCreateOrEdit />} />
         <Route path="/empresas/:id" element={<EnterpriseCreateOrEdit />} />
-        <Route path="/empresas/:id/pedidos" element={<Orders />} />
+        <Route path="/empresas/:enterpriseId/pedidos" element={<Orders />} />
+        <Route path="/empresas/:id/pedidos/:orderId" element={<OrderView />} />
         <Route path="/empresas/:id/categorias" element={<Categories />} />
         <Route path="/empresas/:id/promocoes" element={<Promotions />} />
         <Route
@@ -67,6 +70,13 @@ const Router = () => {
         />
         <Route path="/usuarios" element={<Users />} />
         <Route path="/clientes" element={<Clients />} />
+        <Route path="/clientes/criar" element={<ClientCreateOrEdit />} />
+        <Route path="/clientes/:clientId" element={<ClientCreateOrEdit />} />
+        <Route path="/clientes/:clientId/pedidos" element={<Orders />} />
+        <Route
+          path="/clientes/:clientId/pedidos/:orderId"
+          element={<OrderView />}
+        />
       </Route>
     </Routes>
   );

@@ -12,7 +12,7 @@ export class ClientService {
   private static INSTANCE: ClientService;
 
   async paginate(
-    params: IPaginationRequest & IPaginateClientRequest
+    params: IPaginationRequest & Partial<IPaginateClientRequest>
   ): Promise<IPaginationResponse<IClient>> {
     const res = await server.get<IPaginationResponse<IClient>>("/client", {
       params,

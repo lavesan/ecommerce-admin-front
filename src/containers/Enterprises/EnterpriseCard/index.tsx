@@ -2,14 +2,11 @@ import { Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { AppLabelValue } from "@components/AppLabelValue";
 import {
   HiGiftRef,
+  HiPencilRef,
   HiServerRef,
   HiShoppingCartRef,
 } from "@components/RefIcons";
 import { IFormatPaginateEnterprise } from "@models/IFormatPaginateEnterprise";
-import { forwardRef } from "react";
-import { HiPencil } from "react-icons/hi";
-
-const HiPencilRef = forwardRef((props, ref) => <HiPencil {...props} />);
 
 interface IEnterpriseCard extends IFormatPaginateEnterprise {
   goToEdit: (id: string) => void;

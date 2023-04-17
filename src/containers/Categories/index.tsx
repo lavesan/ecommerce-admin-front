@@ -152,7 +152,7 @@ const Categories = () => {
           </AppResponsiveTable>
         ) : (
           <AppTable
-            caption="Listagem de empresas"
+            caption="Listagem de categorias"
             columns={columns}
             rows={data.data}
             count={data.count}

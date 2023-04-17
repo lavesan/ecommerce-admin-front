@@ -9,6 +9,7 @@ import {
   IconButton,
   InputGroup,
 } from "@chakra-ui/react";
+import { HiEyeOffRef, HiEyeRef } from "@components/RefIcons";
 import {
   ChangeEventHandler,
   ForwardedRef,
@@ -18,7 +19,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { HiEye, HiEyeOff } from "react-icons/hi";
 
 interface IInputProps {
   label?: string;
@@ -37,10 +37,6 @@ interface IInputProps {
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
 }
-
-const HiEyeOffRef = forwardRef((props, ref) => <HiEyeOff {...props} />);
-
-const HiEyeRef = forwardRef((props, ref) => <HiEye {...props} />);
 
 export const AppInput = forwardRef<HTMLInputElement, IInputProps>(
   (

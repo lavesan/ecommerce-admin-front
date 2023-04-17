@@ -7,3 +7,19 @@ export const maskDate = (dateString: any): string => {
   const parsedDate = parse(onlyDate[0], "yyyy-MM-dd", new Date());
   return format(parsedDate, "dd/MM/yyyy");
 };
+
+const addDigits = (digits: number) => {
+  return digits.toString().length > 1 ? digits : `0${digits}`;
+};
+
+export const maskDateTime = (dateString: any): string => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  return `${addDigits(date.getDate())}/${addDigits(
+    date.getMonth() + 1
+  )}/${date.getFullYear()} ${addDigits(date.getHours())}:${addDigits(
+    date.getMinutes()
+  )}h`;
+};

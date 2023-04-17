@@ -9,7 +9,7 @@ export const useAuthenticate = () => {
 
   useEffect(() => {
     if (token && pathname === "/login") {
-      navigate("/");
+      navigate("/empresas");
     } else if (!token) navigate("/login");
   }, [token]);
 };

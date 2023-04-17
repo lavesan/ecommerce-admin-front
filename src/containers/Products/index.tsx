@@ -82,7 +82,7 @@ const Products = () => {
     },
   ];
 
-  const paginateCategories = async () => {
+  const paginateProducts = async () => {
     const result = await productService
       .paginate({ categoryId, ...filter })
       .finally(() => setIsLoading(false));
@@ -124,7 +124,7 @@ const Products = () => {
   };
 
   useEffect(() => {
-    paginateCategories();
+    paginateProducts();
   }, [filter, id]);
 
   return (
@@ -156,7 +156,7 @@ const Products = () => {
           </AppResponsiveTable>
         ) : (
           <AppTable
-            caption="Listagem de empresas"
+            caption="Listagem de produtos"
             columns={columns}
             rows={data.data}
             count={data.count}

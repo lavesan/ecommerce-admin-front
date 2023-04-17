@@ -21,7 +21,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
 
   return (
     <>
-      <SidebarLink
+      {/* <SidebarLink
         icon={HiPresentationChartLine}
         to="/"
         label="Dashboard"
@@ -36,7 +36,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         isActive={pathname.includes("/usuarios")}
         marginBottom={1}
         onClick={onLinkClick}
-      />
+      /> */}
       <SidebarLink
         icon={HiThumbUp}
         to="/clientes"
@@ -53,37 +53,6 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         marginBottom={1}
         onClick={onLinkClick}
       />
-      {/* <SidebarLink
-        icon={HiServer}
-        to="/categorias"
-        label="Categorias"
-        isActive={pathname.includes("/categorias")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
-      <SidebarLink
-        icon={HiShoppingBag}
-        to="/produtos"
-        label="Produtos"
-        isActive={pathname.includes("/produtos")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
-      <SidebarLink
-        icon={HiGift}
-        to="/promocoes"
-        label="Promoções"
-        isActive={pathname.includes("/promocoes")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
-      <SidebarLink
-        icon={HiShoppingCart}
-        to="/pedidos"
-        label="Pedidos"
-        isActive={pathname.includes("/pedidos")}
-        onClick={onLinkClick}
-      /> */}
     </>
   );
 };
