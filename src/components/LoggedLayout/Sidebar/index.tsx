@@ -1,20 +1,10 @@
-import { Flex, IconButton } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
-import {
-  HiShoppingBag,
-  HiGift,
-  HiServer,
-  HiShoppingCart,
-  HiOfficeBuilding,
-  HiPresentationChartLine,
-  HiUserGroup,
-  HiThumbUp,
-} from "react-icons/hi";
+import { Flex, Heading, IconButton } from "@chakra-ui/react";
 import { AiOutlinePoweroff } from "react-icons/ai";
 
-import { SidebarLink } from "./SidebarLink";
 import { useAppContext } from "@hooks/useAppContext";
 import { forwardRef } from "react";
+import { Links } from "../Links";
+import { useUser } from "@hooks/useUser";
 
 const AiOutlinePoweroffRef = forwardRef((props, ref) => (
   <AiOutlinePoweroff {...props} />
@@ -22,73 +12,24 @@ const AiOutlinePoweroffRef = forwardRef((props, ref) => (
 
 export const Sidebar = () => {
   const { logout } = useAppContext();
-  const { pathname } = useLocation();
+  const { name } = useUser();
 
   return (
     <Flex
       as="header"
       height="100vh"
       position="sticky"
+      left={0}
+      top={0}
+      zIndex={2}
       flexDir="column"
       padding={4}
       backgroundColor="green.500"
     >
-      <SidebarLink
-        icon={HiPresentationChartLine}
-        to="/"
-        label="Dashboard"
-        isActive={pathname === "/"}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiUserGroup}
-        to="/usuarios"
-        label="Usuários"
-        isActive={pathname.includes("/usuarios")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiThumbUp}
-        to="/clientes"
-        label="Clientes"
-        isActive={pathname.includes("/clientes")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiOfficeBuilding}
-        to="/empresas"
-        label="Empresas"
-        isActive={pathname.includes("/empresas")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiServer}
-        to="/categorias"
-        label="Categorias"
-        isActive={pathname.includes("/categorias")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiShoppingBag}
-        to="/produtos"
-        label="Produtos"
-        isActive={pathname.includes("/produtos")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiGift}
-        to="/promocoes"
-        label="Promoções"
-        isActive={pathname.includes("/promocoes")}
-        marginBottom={1}
-      />
-      <SidebarLink
-        icon={HiShoppingCart}
-        to="/pedidos"
-        label="Pedidos"
-        isActive={pathname.includes("/pedidos")}
-        marginBottom={1}
-      />
+      <Heading as="h2" size="xs" color="white" marginBottom={4}>
+        Olá, {name}
+      </Heading>
+      <Links />
       <IconButton
         as={AiOutlinePoweroffRef}
         aria-label="Logout"

@@ -40,7 +40,13 @@ function App() {
       <AppContext.Provider value={{ logout, setIsLoading }}>
         <ChakraProvider theme={theme}>
           <AxiosInterceptorHOC>
-            <Flex position="relative" width="100%" height="100%" {...appStyle}>
+            <Flex
+              position="relative"
+              width="100%"
+              height="100%"
+              minHeight="100vh"
+              {...appStyle}
+            >
               {isLoading && (
                 <Flex {...loadingStyle} position="absolute">
                   <Spinner size="xl" />

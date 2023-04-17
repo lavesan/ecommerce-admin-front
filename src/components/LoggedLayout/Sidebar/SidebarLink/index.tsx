@@ -7,6 +7,7 @@ interface ISidebarLinkProps extends StyleProps {
   label: string;
   icon: IconType;
   isActive: boolean;
+  onClick?: VoidFunction;
 }
 
 export const SidebarLink = ({
@@ -14,6 +15,7 @@ export const SidebarLink = ({
   label,
   icon,
   isActive,
+  onClick,
   ...style
 }: ISidebarLinkProps) => {
   return (
@@ -32,6 +34,7 @@ export const SidebarLink = ({
         backgroundColor: "green.800",
       }}
       {...style}
+      onClick={() => onClick && onClick()}
     >
       <Icon marginRight={2} as={icon} />
       {label}

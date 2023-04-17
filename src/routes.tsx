@@ -13,6 +13,7 @@ import Promotions from "@containers/Promotions";
 import Clients from "@containers/Clients";
 import Users from "@containers/Users";
 import { useAuthenticate } from "@hooks/useAuthenticate";
+import EnterpriseCreateOrEdit from "@containers/EnterpriseCreateOrEdit";
 
 const Router = () => {
   useAuthenticate();
@@ -37,6 +38,8 @@ const Router = () => {
       >
         <Route path="/" element={<Home />} />
         <Route path="/empresas" element={<Enterprises />} />
+        <Route path="/empresas/criar" element={<EnterpriseCreateOrEdit />} />
+        <Route path="/empresas/:id" element={<EnterpriseCreateOrEdit />} />
         <Route path="/pedidos" element={<Orders />} />
         <Route path="/categorias" element={<Categories />} />
         <Route path="/produtos" element={<Products />} />
