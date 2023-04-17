@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 interface IAppLabelValueProps {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export const AppLabelValue = ({ label, value }: IAppLabelValueProps) => {

@@ -20,6 +20,7 @@ export const AppTableActions = ({ actions }: IAppTableActionsProps) => {
           onClick={onClick}
           cursor="pointer"
           background="none"
+          color="green.700"
           size="md"
           borderRadius="50%"
           title={title}

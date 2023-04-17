@@ -1,4 +1,4 @@
 export interface IPaginateProductFilter {
-  name: string;
-  categoryId: string;
+  name?: string;
+  categoryId?: string;
 }

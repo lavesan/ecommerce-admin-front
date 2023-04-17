@@ -53,7 +53,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         marginBottom={1}
         onClick={onLinkClick}
       />
-      <SidebarLink
+      {/* <SidebarLink
         icon={HiServer}
         to="/categorias"
         label="Categorias"
@@ -83,7 +83,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         label="Pedidos"
         isActive={pathname.includes("/pedidos")}
         onClick={onLinkClick}
-      />
+      /> */}
     </>
   );
 };

@@ -1,7 +1,6 @@
-import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
-import { forwardRef, useEffect, useState } from "react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HiPencil } from "react-icons/hi";
 
 import { AppTable } from "@components/AppTable";
 import { maskDate } from "@helpers/date.helper";
@@ -20,8 +19,12 @@ import { AppResponsiveTable } from "@components/AppResponsiveTable";
 import { ITableColumn } from "@models/components/ITableColumn";
 import { EnterpriseCard } from "./EnterpriseCard";
 import { FilterForm } from "./FilterForm";
-
-const HiPencilRef = forwardRef((props, ref) => <HiPencil {...props} />);
+import {
+  HiGiftRef,
+  HiPencilRef,
+  HiServerRef,
+  HiShoppingCartRef,
+} from "@components/RefIcons";
 
 const Enterprises = () => {
   const enterpriseService = EnterpriseService.getInstance();
@@ -64,6 +67,24 @@ const Enterprises = () => {
       accessor: ({ id }) => (
         <AppTableActions
           actions={[
+            {
+              id,
+              title: "Pedidos",
+              icon: HiShoppingCartRef,
+              onClick: () => goToOrders(id),
+            },
+            {
+              id,
+              title: "Categorias",
+              icon: HiServerRef,
+              onClick: () => goToCategories(id),
+            },
+            {
+              id,
+              title: "Promoções",
+              icon: HiGiftRef,
+              onClick: () => goToPromotions(id),
+            },
             {
               id,
               title: "Editar",
@@ -116,6 +137,18 @@ const Enterprises = () => {
     navigate(`/empresas/${id}`);
   };
 
+  const goToCategories = (id: string) => {
+    navigate(`/empresas/${id}/categorias`);
+  };
+
+  const goToOrders = (id: string) => {
+    navigate(`/empresas/${id}/pedidos`);
+  };
+
+  const goToPromotions = (id: string) => {
+    navigate(`/empresas/${id}/promocoes`);
+  };
+
   useEffect(() => {
     paginateEnterprises();
   }, [filter]);
@@ -145,7 +178,12 @@ const Enterprises = () => {
             onPageChange={onPageChange}
           >
             {/* @ts-ignore */}
-            <EnterpriseCard goToEdit={goToEdit} />
+            <EnterpriseCard
+              goToEdit={goToEdit}
+              goToCategories={goToCategories}
+              goToOrders={goToOrders}
+              goToPromotions={goToPromotions}
+            />
           </AppResponsiveTable>
         ) : (
           <AppTable
