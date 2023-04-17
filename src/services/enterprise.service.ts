@@ -12,7 +12,7 @@ export class EnterpriseService {
   private static INSTANCE: EnterpriseService;
 
   async paginate(
-    params: IPaginationRequest & IPaginateEnterpriseFilter
+    params: IPaginationRequest & Partial<IPaginateEnterpriseFilter>
   ): Promise<IPaginationResponse<IEnterprise>> {
     const res = await server.get<IPaginationResponse<IEnterprise>>(
       "/enterprise",

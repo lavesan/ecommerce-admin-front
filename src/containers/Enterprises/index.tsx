@@ -19,6 +19,7 @@ import { useResponsive } from "@hooks/useResponsive";
 import { AppResponsiveTable } from "@components/AppResponsiveTable";
 import { ITableColumn } from "@models/components/ITableColumn";
 import { EnterpriseCard } from "./EnterpriseCard";
+import { FilterForm } from "./FilterForm";
 
 const HiPencilRef = forwardRef((props, ref) => <HiPencil {...props} />);
 
@@ -34,11 +35,11 @@ const Enterprises = () => {
   const [data, setData] =
     useState<IPaginationResponse<IFormatPaginateEnterprise>>();
   const [filter, setFilter] = useState<
-    IPaginationRequest & IPaginateEnterpriseFilter
+    IPaginationRequest & Partial<IPaginateEnterpriseFilter>
   >({
     page: 0,
     size: 10,
-  } as IPaginationRequest & IPaginateEnterpriseFilter);
+  } as IPaginationRequest & Partial<IPaginateEnterpriseFilter>);
 
   const columns: ITableColumn[] = [
     {
@@ -92,6 +93,14 @@ const Enterprises = () => {
     setData(mappedResult);
   };
 
+  const onFilter = (filter: IPaginateEnterpriseFilter) => {
+    setFilter({
+      page: 0,
+      size: 10,
+      ...filter,
+    });
+  };
+
   const onPageChange = (newPage: number) => {
     setFilter((actual) => ({
       ...actual,
@@ -113,11 +122,16 @@ const Enterprises = () => {
 
   return (
     <>
-      <Flex flexDir="row" justify="space-between">
-        <Heading marginBottom={8} size="lg">
-          Listagem de empresas
-        </Heading>
-        <Button onClick={goToAdd} colorScheme="green">
+      <Heading marginBottom={8} size="lg">
+        Listagem de empresas
+      </Heading>
+      <Flex
+        flexDir={["column-reverse", "row"]}
+        justify="space-between"
+        marginBottom={8}
+      >
+        <FilterForm onFilter={onFilter} />
+        <Button onClick={goToAdd} colorScheme="green" marginBottom={[4, 0]}>
           Adicionar
         </Button>
       </Flex>

@@ -21,7 +21,7 @@ import {
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
 interface IInputProps {
-  label: string;
+  label?: string;
   errorMsg?: string;
   style?: StyleProps;
   onChange: ChangeEventHandler;
@@ -35,6 +35,7 @@ interface IInputProps {
   required?: boolean;
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
+  placeholder?: string;
 }
 
 const HiEyeOffRef = forwardRef((props, ref) => <HiEyeOff {...props} />);
@@ -69,7 +70,7 @@ export const AppInput = forwardRef<HTMLInputElement, IInputProps>(
 
     return (
       <FormControl isInvalid={!!errorMsg} {...style}>
-        <FormLabel htmlFor={input.name}>{label}</FormLabel>
+        {label && <FormLabel htmlFor={input.name}>{label}</FormLabel>}
         <InputGroup>
           <Input ref={ref} id={input.name} type={inputType} {...input} />
           {type === "password" && (
