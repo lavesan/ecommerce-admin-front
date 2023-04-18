@@ -2,6 +2,7 @@ import { ICategory } from "./ICategory";
 import { IFreight } from "./IFreight";
 import { IOrder } from "./IOrder";
 import { IPromotion } from "./IPromotion";
+import { ISchedule } from "./ISchedule";
 import { IUser } from "./IUser";
 
 export interface IEnterprise {
@@ -27,4 +28,5 @@ export interface IEnterprise {
   freights?: IFreight[];
   promotions?: IPromotion[];
   user?: IUser;
+  schedules?: ISchedule[];
 }

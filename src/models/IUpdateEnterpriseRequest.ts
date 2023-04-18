@@ -1,3 +1,6 @@
+import { ScheduleRelation } from "@enums/ScheduleRelation";
+import { WeekDay } from "@enums/WeekDay.enum";
+
 export interface IUpdateEnterpriseRequest {
   name: string;
   email: string;
@@ -18,5 +21,11 @@ export interface IUpdateEnterpriseRequest {
     addressKey: string;
     addressValue: string;
     value: number;
+  }[];
+  schedules?: {
+    id?: string | undefined;
+    time: string;
+    relation: ScheduleRelation;
+    weekDay: WeekDay;
   }[];
 }

@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, Spinner, Flex } from "@chakra-ui/react";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClientProvider } from "react-query";
 
+import { queryClient } from "@config/query-client.config";
 import { AppContext } from "@context/AppContext";
 import { useTokenCookies } from "@hooks/useTokenCookies";
 import { AxiosInterceptorHOC } from "@config/axios.config";
@@ -36,28 +39,31 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <AppContext.Provider value={{ logout, setIsLoading }}>
-        <ChakraProvider theme={theme}>
-          <AxiosInterceptorHOC>
-            <Flex
-              position="relative"
-              width="100%"
-              height="100%"
-              minHeight="100vh"
-              {...appStyle}
-            >
-              {isLoading && (
-                <Flex {...loadingStyle} position="absolute">
-                  <Spinner size="xl" />
-                </Flex>
-              )}
-              <Router />
-            </Flex>
-          </AxiosInterceptorHOC>
-        </ChakraProvider>
-      </AppContext.Provider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppContext.Provider value={{ logout, setIsLoading }}>
+          <ChakraProvider theme={theme}>
+            <AxiosInterceptorHOC>
+              <Flex
+                position="relative"
+                width="100%"
+                height="100%"
+                minHeight="100vh"
+                {...appStyle}
+              >
+                {isLoading && (
+                  <Flex {...loadingStyle} position="absolute">
+                    <Spinner size="xl" />
+                  </Flex>
+                )}
+                <Router />
+              </Flex>
+            </AxiosInterceptorHOC>
+          </ChakraProvider>
+        </AppContext.Provider>
+      </BrowserRouter>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 }
 

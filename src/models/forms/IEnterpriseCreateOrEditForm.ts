@@ -1,3 +1,13 @@
+import { ScheduleRelation } from "@enums/ScheduleRelation";
+import { WeekDay } from "@enums/WeekDay.enum";
+
+export interface IEnterpriseCreateOrEditFormSchedule {
+  scheduleId?: string | undefined;
+  time: string;
+  relation: ScheduleRelation;
+  weekDay: WeekDay;
+}
+
 export interface IEnterpriseCreateOrEditForm {
   name: string;
   email: string;
@@ -16,4 +26,5 @@ export interface IEnterpriseCreateOrEditForm {
     addressValue: string;
     value: number;
   }[];
+  schedules?: IEnterpriseCreateOrEditFormSchedule[];
 }

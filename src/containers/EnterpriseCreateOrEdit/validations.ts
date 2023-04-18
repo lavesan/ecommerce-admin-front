@@ -1,10 +1,13 @@
+import { ScheduleRelation } from "@enums/ScheduleRelation";
+import { WeekDay } from "@enums/WeekDay.enum";
 import {
   CNPJ_ERROR,
   EMAIL_ERROR,
   PHONE_ERROR,
   REQUIRED_ERROR,
+  TIME_ERROR,
 } from "@helpers/error.helper";
-import { cnpjReg, phoneReg } from "@helpers/validation.helper";
+import { cnpjReg, phoneReg, timeReg } from "@helpers/validation.helper";
 import * as yup from "yup";
 
 export const validationSchema = yup.object({
@@ -24,10 +27,40 @@ export const validationSchema = yup.object({
     .of(
       yup
         .object({
-          id: yup.string().uuid().notRequired(),
+          freightId: yup.string().uuid().notRequired(),
           addressKey: yup.string().required(REQUIRED_ERROR),
           addressValue: yup.string().required(REQUIRED_ERROR),
           value: yup.number().required(REQUIRED_ERROR),
+        })
+        .notRequired()
+    )
+    .notRequired(),
+  schedules: yup
+    .array()
+    .of(
+      yup
+        .object({
+          scheduleId: yup.string().uuid().notRequired(),
+          time: yup
+            .string()
+            .matches(timeReg, TIME_ERROR)
+            .required(REQUIRED_ERROR),
+          relation: yup
+            .mixed()
+            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
+            .required(REQUIRED_ERROR),
+          weekDay: yup
+            .mixed()
+            .oneOf([
+              WeekDay.DOM,
+              WeekDay.QUA,
+              WeekDay.QUI,
+              WeekDay.SAB,
+              WeekDay.SEG,
+              WeekDay.SEX,
+              WeekDay.TER,
+            ])
+            .required(REQUIRED_ERROR),
         })
         .notRequired()
     )

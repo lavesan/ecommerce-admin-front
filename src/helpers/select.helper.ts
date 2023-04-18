@@ -1,6 +1,7 @@
 import { getCities } from "@brazilian-utils/brazilian-utils";
 import { OrderStatus } from "@enums/OrderStatus.enum";
 import { PaymentType } from "@enums/PaymentType.enum";
+import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { WeekDay } from "@enums/WeekDay.enum";
 
 export const paymentTypeOptions = [
@@ -72,3 +73,15 @@ export const districtOptions = districts.map((district) => ({
   label: district,
   value: district,
 }));
+
+const handleScheduleRelation = {
+  [ScheduleRelation.FROM]: "De",
+  [ScheduleRelation.TO]: "Até",
+};
+
+export const scheduleRelationOptions = Object.values(ScheduleRelation).map(
+  (schedule) => ({
+    label: handleScheduleRelation[schedule],
+    value: schedule,
+  })
+);
