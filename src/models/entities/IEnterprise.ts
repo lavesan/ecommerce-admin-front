@@ -11,6 +11,7 @@ export interface IEnterprise {
   description: string;
   cnpj: string;
   cep: string;
+  phone: string;
   street: string;
   complement: string;
   number: string;

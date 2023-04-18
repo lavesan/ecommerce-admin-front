@@ -8,6 +8,7 @@ export interface IClient {
   password: string;
   cpf: string;
   points: number;
+  phone: string;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

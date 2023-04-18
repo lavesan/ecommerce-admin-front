@@ -16,6 +16,7 @@ import { FilterForm } from "./FilterForm";
 import { AppResponsiveTable } from "@components/AppResponsiveTable";
 import {
   maskMoney,
+  maskPhone,
   translateOrderStatus,
   translatePaymentType,
 } from "@helpers/format.helper";
@@ -47,6 +48,10 @@ const Orders = () => {
     {
       id: "clientName",
       label: "Cliente",
+    },
+    {
+      id: "phone",
+      label: "Telefone",
     },
     {
       id: "paymentType",
@@ -111,6 +116,7 @@ const Orders = () => {
         }) => ({
           ...elem,
           clientName: client?.name || "",
+          phone: maskPhone(client?.phone || ""),
           paymentType: translatePaymentType(paymentType),
           status: translateOrderStatus(status),
           totalValue: maskMoney(freightValue + productsValue),

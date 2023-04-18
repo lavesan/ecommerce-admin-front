@@ -3,6 +3,7 @@ export interface IUpdateEnterpriseRequest {
   email: string;
   description: string;
   cnpj: string;
+  phone: string;
   cep: string;
   street: string;
   complement: string;
@@ -12,8 +13,8 @@ export interface IUpdateEnterpriseRequest {
   city: string;
   imageKey: string;
   userId: string;
-  freights: {
-    id?: string;
+  freights?: {
+    id?: string | undefined;
     addressKey: string;
     addressValue: string;
     value: number;

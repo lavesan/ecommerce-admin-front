@@ -10,6 +10,10 @@ export const maskCpf = (cpf: string) => {
   return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 };
 
+export const maskPhone = (phone: string) => {
+  return phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+};
+
 /**
  * @description money is an integer number
  * @param {number} money
@@ -75,3 +79,9 @@ const handleWeekDay = {
 export const translateWeekDay = (weekDay: WeekDay) => {
   return handleWeekDay[weekDay];
 };
+
+export const dbNumberMoneyToNumber = (money: number) =>
+  money ? money / 100 : money;
+
+export const numberToNumberMoneyDb = (money: number) =>
+  money ? money * 100 : money;

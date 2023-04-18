@@ -14,6 +14,7 @@ export const OrderCard = ({
   status,
   created_at,
   clientName,
+  phone,
   goToView,
 }: IEnterpriseCard) => {
   return (
@@ -36,6 +37,7 @@ export const OrderCard = ({
         {id}
       </Text>
       <AppLabelValue label="Cliente" value={clientName} />
+      <AppLabelValue label="Telefone" value={phone} />
       <AppLabelValue label="Valor total" value={totalValue} />
       <AppLabelValue label="Tipo de pagamento" value={paymentType} />
       <AppLabelValue

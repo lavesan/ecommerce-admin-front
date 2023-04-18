@@ -14,11 +14,11 @@ export const server = axios.create({
   timeout: 30000,
 });
 
-axiosRetry(server, {
-  // retries on network errors with status 5xx
-  retries: 3,
-  retryCondition: isRetryableError,
-});
+// axiosRetry(server, {
+//   // retries on network errors with status 5xx
+//   retries: 3,
+//   retryCondition: isRetryableError,
+// });
 
 interface IAxiosInterceptorHOCProps {
   children: React.ReactElement;

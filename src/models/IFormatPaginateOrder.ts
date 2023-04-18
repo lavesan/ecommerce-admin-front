@@ -7,6 +7,7 @@ import { IAddress } from "./entities/IAddress";
 export interface IFormatPaginateOrder {
   id: string;
   clientName: string;
+  phone: string;
   freightValue: string;
   productsValue: string;
   paymentType: string;

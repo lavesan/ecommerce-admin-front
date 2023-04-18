@@ -15,10 +15,15 @@ export class ImageService {
     return res.data;
   }
 
-  async getByKey(key: string): Promise<boolean> {
-    const res = await server.get<boolean>(`/image/${key}`, {
+  async getByKey(key: string): Promise<Blob> {
+    const res = await server.get<Blob>(`/image/${key}`, {
       responseType: "blob",
     });
+    return res.data;
+  }
+
+  async deleteByKey(key: string): Promise<boolean> {
+    const res = await server.delete<boolean>(`/image/${key}`);
     return res.data;
   }
 
