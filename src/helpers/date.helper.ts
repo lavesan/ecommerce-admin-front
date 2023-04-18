@@ -23,3 +23,19 @@ export const maskDateTime = (dateString: any): string => {
     date.getMinutes()
   )}h`;
 };
+
+export const timeStringToDate = (time: string): Date => {
+  const hour = time.slice(0, 2);
+  const minute = time.slice(3, 5);
+
+  const date = new Date();
+  date.setHours(Number(hour) - 3);
+  date.setMinutes(Number(minute));
+
+  return date;
+};
+
+export const extractTimeFromDate = (dateString: any): string => {
+  const date = new Date(dateString);
+  return `${addDigits(date.getHours())}:${addDigits(date.getMinutes())}`;
+};

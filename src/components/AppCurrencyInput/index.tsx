@@ -61,10 +61,9 @@ export const AppCurrencyInput = forwardRef<
         <CurrencyInput
           ref={ref}
           value={getValues(input.name)}
-          onChangeValue={(event, originalValue, maskedValue) => {
-            setValue(input.name, originalValue);
-            console.log(event, originalValue, maskedValue);
-          }}
+          onChangeValue={(event, originalValue, maskedValue) =>
+            setValue(input.name, originalValue)
+          }
           InputElement={<Input id={input.name} />}
         />
         <Collapse in={!!errorMsg} animateOpacity>

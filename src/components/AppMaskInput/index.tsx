@@ -33,14 +33,25 @@ interface IInputMaskProps {
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
+  setValue: any;
+  value: any;
 }
 
 export const AppMaskInput = forwardRef<HTMLInputElement, IInputMaskProps>(
   (
-    { label, errorMsg, style = {}, mask, ...input },
+    { label, errorMsg, style = {}, mask, setValue, value, ...input },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [aliasErrorMsg, setAliasErrorMsg] = useState("");
+    const [maskValue, setMaskValue] = useState("");
+
+    useEffect(() => {
+      setMaskValue(value);
+    }, [value]);
+
+    useEffect(() => {
+      setValue(input.name, maskValue);
+    }, [maskValue]);
 
     useEffect(() => {
       if (errorMsg) setAliasErrorMsg(errorMsg);
@@ -54,7 +65,13 @@ export const AppMaskInput = forwardRef<HTMLInputElement, IInputMaskProps>(
     return (
       <FormControl isInvalid={!!errorMsg} {...style}>
         {label && <FormLabel htmlFor={input.name}>{label}</FormLabel>}
-        <InputMask mask={mask} id={input.name} {...input}>
+        <InputMask
+          mask={mask}
+          id={input.name}
+          {...input}
+          value={maskValue}
+          onChange={(elem) => setMaskValue(elem.target.value)}
+        >
           {/* @ts-ignore */}
           {(inputProps) => <Input ref={ref} {...inputProps} />}
         </InputMask>

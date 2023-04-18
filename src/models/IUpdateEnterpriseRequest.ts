@@ -24,7 +24,7 @@ export interface IUpdateEnterpriseRequest {
   }[];
   schedules?: {
     id?: string | undefined;
-    time: string;
+    time: Date;
     relation: ScheduleRelation;
     weekDay: WeekDay;
   }[];

@@ -22,7 +22,7 @@ export interface ICreateEnterpriseRequest {
     value: number;
   }[];
   schedules?: {
-    time: string;
+    time: Date;
     relation: ScheduleRelation;
     weekDay: WeekDay;
   }[];

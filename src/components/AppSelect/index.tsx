@@ -31,11 +31,12 @@ interface IInputProps {
   disabled?: boolean;
   placeholder?: string;
   setValue: any;
+  getValues: any;
 }
 
 export const AppSelect = forwardRef<HTMLSelectElement, IInputProps>(
   (
-    { label, errorMsg, style = {}, data, setValue, ...input },
+    { label, errorMsg, style = {}, data, setValue, getValues, ...input },
     ref: ForwardedRef<HTMLSelectElement>
   ) => {
     const [aliasErrorMsg, setAliasErrorMsg] = useState("");
@@ -61,6 +62,7 @@ export const AppSelect = forwardRef<HTMLSelectElement, IInputProps>(
           {...input}
           isInvalid={!!errorMsg}
           onChange={onChange}
+          value={getValues(input.name)}
         >
           {data.map(({ label, value }) => (
             <option key={value} value={value}>

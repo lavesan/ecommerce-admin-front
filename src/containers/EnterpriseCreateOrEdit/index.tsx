@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { AppImageInput } from "@components/AppImageInput";
 import { useParams } from "react-router-dom";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./validations";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -31,6 +31,7 @@ import { WeekDay } from "@enums/WeekDay.enum";
 import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { generateImageKey } from "@helpers/image.helper";
 import { useGetImageRequest } from "@hooks/useGetImageRequest";
+import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 
 const EnterpriseCreate = () => {
   const imageService = ImageService.getInstance();
@@ -90,7 +91,7 @@ const EnterpriseCreate = () => {
         schedules?.map(({ id, relation, time, weekDay }) => ({
           scheduleId: id,
           relation,
-          time: time.toString(),
+          time: extractTimeFromDate(time),
           weekDay,
         })) || [],
     };
@@ -153,9 +154,10 @@ const EnterpriseCreate = () => {
         value: numberToNumberMoneyDb(value),
       })) || [],
     schedules:
-      schedules?.map(({ scheduleId, ...schedule }) => ({
+      schedules?.map(({ scheduleId, time, ...schedule }) => ({
         ...schedule,
         id: scheduleId,
+        time: timeStringToDate(time),
       })) || [],
   });
 
@@ -213,12 +215,6 @@ const EnterpriseCreate = () => {
 
       setEnterprise(res);
       setImageKey(res.imageKey);
-
-      // const loadedImage = await imageService
-      //   .getByKey(res.imageKey)
-      //   .finally(() => setIsLoading(false));
-
-      // setSavedImage(loadedImage);
     }
   }, []);
 
@@ -264,6 +260,8 @@ const EnterpriseCreate = () => {
             {...register("phone")}
             errorMsg={errors.phone?.message}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+            setValue={setValue}
+            value={getValues("phone")}
           />
           <AppMaskInput
             mask={cnpjMask}
@@ -272,6 +270,8 @@ const EnterpriseCreate = () => {
             {...register("cnpj")}
             errorMsg={errors.cnpj?.message}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+            setValue={setValue}
+            value={getValues("cnpj")}
           />
         </Flex>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
@@ -305,6 +305,7 @@ const EnterpriseCreate = () => {
               errorMsg={errors.city?.message}
               style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
               setValue={setValue}
+              getValues={getValues}
             />
           </GridItem>
         </Grid>
@@ -387,6 +388,7 @@ const EnterpriseCreate = () => {
                   }
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                   setValue={setValue}
+                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[3, 1]}>
@@ -401,11 +403,11 @@ const EnterpriseCreate = () => {
                   }
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                   setValue={setValue}
+                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[3, 1]}>
-                <AppMaskInput
-                  mask={timeMask}
+                <AppInput
                   aria-label={`schedules.${index}.time`}
                   label="Tempo"
                   {...register(`schedules.${index}.time`)}
@@ -471,6 +473,7 @@ const EnterpriseCreate = () => {
                   }
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                   setValue={setValue}
+                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[2, 1]}>
