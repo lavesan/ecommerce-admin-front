@@ -19,9 +19,9 @@ interface IFilterFormProps extends StyleProps {
 
 export const FilterForm = ({ onFilter, ...style }: IFilterFormProps) => {
   const {
+    control,
     handleSubmit,
     register,
-    setValue,
     formState: { errors },
   } = useForm<IForm>({
     mode: "all",
@@ -44,14 +44,12 @@ export const FilterForm = ({ onFilter, ...style }: IFilterFormProps) => {
         errorMsg={errors.name?.message}
         style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
       />
-      <AppSelect
+      <AppSelect<IForm>
+        control={control}
         data={weekDayOptions}
-        aria-label="weekDay"
+        name="weekDay"
         placeholder="Tipo de pagamento"
-        {...register("weekDay")}
-        errorMsg={errors.weekDay?.message}
         style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-        setValue={setValue}
       />
       <Button type="submit" paddingInline={8}>
         Filtrar

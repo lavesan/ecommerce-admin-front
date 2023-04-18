@@ -11,8 +11,9 @@ import { Path, FieldValues, Control, useController } from "react-hook-form";
 
 interface IInputProps<IForm extends FieldValues> {
   control: Control<IForm, string>;
-  label: string;
+  label?: string;
   name: Path<IForm>;
+  placeholder?: string;
   style?: StyleProps;
   data: { label: string; value: string | number }[];
 }
@@ -23,6 +24,7 @@ export function AppSelect<IForm extends FieldValues>({
   name,
   data,
   style = {},
+  ...select
 }: IInputProps<IForm>) {
   const {
     field: { onChange: onControlChange, value },
@@ -60,6 +62,7 @@ export function AppSelect<IForm extends FieldValues>({
         isInvalid={!!errorMsg}
         onChange={onChange}
         value={value}
+        {...select}
       >
         {data.map(({ label, value }) => (
           <option key={value} value={value}>

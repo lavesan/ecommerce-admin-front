@@ -19,12 +19,7 @@ interface IFilterFormProps extends StyleProps {
 }
 
 export const FilterForm = ({ onFilter, ...style }: IFilterFormProps) => {
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    formState: { errors },
-  } = useForm<IForm>({
+  const { control, handleSubmit } = useForm<IForm>({
     mode: "all",
     resolver: yupResolver(validationSchema),
   });
@@ -35,23 +30,19 @@ export const FilterForm = ({ onFilter, ...style }: IFilterFormProps) => {
 
   return (
     <Flex as="form" flexDir={["column", "row"]} onSubmit={onSubmit} {...style}>
-      <AppSelect
+      <AppSelect<IForm>
         data={orderStatusOptions}
-        aria-label="status"
+        control={control}
+        name="status"
         placeholder="Status"
-        {...register("status")}
-        errorMsg={errors.status?.message}
         style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-        setValue={setValue}
       />
-      <AppSelect
+      <AppSelect<IForm>
         data={paymentTypeOptions}
-        aria-label="paymentType"
+        control={control}
+        name="paymentType"
         placeholder="Tipo de pagamento"
-        {...register("paymentType")}
-        errorMsg={errors.paymentType?.message}
         style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-        setValue={setValue}
       />
       <Button type="submit" paddingInline={8}>
         Filtrar
