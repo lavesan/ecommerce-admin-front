@@ -1,5 +1,6 @@
 import { OrderStatus } from "@enums/OrderStatus.enum";
 import { PaymentType } from "@enums/PaymentType.enum";
+import { WeekDay } from "@enums/WeekDay.enum";
 
 export const maskCnpj = (cnpj: string) => {
   return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
@@ -59,4 +60,18 @@ const handlePaymentType = {
 
 export const translatePaymentType = (paymentType: PaymentType) => {
   return handlePaymentType[paymentType];
+};
+
+const handleWeekDay = {
+  [WeekDay.DOM]: "Domingo",
+  [WeekDay.SEG]: "Segunda",
+  [WeekDay.TER]: "Terça",
+  [WeekDay.QUA]: "Quarta",
+  [WeekDay.QUI]: "Quinta",
+  [WeekDay.SEX]: "Sexta",
+  [WeekDay.SAB]: "Sábado",
+};
+
+export const translateWeekDay = (weekDay: WeekDay) => {
+  return handleWeekDay[weekDay];
 };

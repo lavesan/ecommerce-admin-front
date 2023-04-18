@@ -1,9 +1,7 @@
-import { Badge, Card, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { Badge, Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { AppLabelValue } from "@components/AppLabelValue";
 import { HiEyeRef } from "@components/RefIcons";
 import { IFormatPaginateOrder } from "@models/IFormatPaginateOrder";
-import { forwardRef } from "react";
-import { HiPencil } from "react-icons/hi";
 
 interface IEnterpriseCard extends IFormatPaginateOrder {
   goToView: (id: string) => void;

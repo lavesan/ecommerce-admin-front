@@ -6,6 +6,7 @@ import { AppInput } from "@components/AppInput";
 
 export interface IForm {
   name: string;
+  email: string;
 }
 
 interface IFilterFormProps {
@@ -22,9 +23,10 @@ export const FilterForm = ({ onFilter }: IFilterFormProps) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = handleSubmit(({ name }) => {
+  const onSubmit = handleSubmit(({ name, email }) => {
     onFilter({
       name: name?.trim(),
+      email: email.trim(),
     });
   });
 

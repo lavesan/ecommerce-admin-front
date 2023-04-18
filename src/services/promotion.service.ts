@@ -12,7 +12,7 @@ export class PromotionService {
   private static INSTANCE: PromotionService;
 
   async paginate(
-    params: IPaginationRequest & IPaginatePromotionfilter
+    params: IPaginationRequest & Partial<IPaginatePromotionfilter>
   ): Promise<IPaginationResponse<IPromotion>> {
     const res = await server.get<IPaginationResponse<IPromotion>>(
       "/promotion",

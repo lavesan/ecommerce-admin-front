@@ -83,7 +83,7 @@ const Clients = () => {
     },
   ];
 
-  const paginateEnterprises = async () => {
+  const paginateClients = async () => {
     const result = await clientService
       .paginate(filter)
       .finally(() => setIsLoading(false));
@@ -128,7 +128,7 @@ const Clients = () => {
   };
 
   useEffect(() => {
-    paginateEnterprises();
+    paginateClients();
   }, [filter]);
 
   return (
