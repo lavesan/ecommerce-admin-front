@@ -84,4 +84,4 @@ export const dbNumberMoneyToNumber = (money: number) =>
   money ? money / 100 : money;
 
 export const numberToNumberMoneyDb = (money: number) =>
-  money ? money * 100 : money;
+  money ? Math.ceil(money * 100) : money;

@@ -7,7 +7,12 @@ import {
   REQUIRED_ERROR,
   TIME_ERROR,
 } from "@helpers/error.helper";
-import { cnpjReg, phoneReg, timeReg } from "@helpers/validation.helper";
+import {
+  cnpjReg,
+  estimatedTimeReg,
+  phoneReg,
+  timeReg,
+} from "@helpers/validation.helper";
 import * as yup from "yup";
 
 export const validationSchema = yup.object({
@@ -16,6 +21,11 @@ export const validationSchema = yup.object({
   description: yup.string().required(REQUIRED_ERROR),
   cnpj: yup.string().matches(cnpjReg, CNPJ_ERROR).required(REQUIRED_ERROR),
   phone: yup.string().matches(phoneReg, PHONE_ERROR).required(REQUIRED_ERROR),
+  estimatedTime: yup
+    .string()
+    .matches(estimatedTimeReg, TIME_ERROR)
+    .notRequired(),
+  isDisabled: yup.boolean().notRequired(),
   cep: yup.string().required(REQUIRED_ERROR),
   street: yup.string().required(REQUIRED_ERROR),
   complement: yup.string().notRequired(),

@@ -6,76 +6,72 @@ import {
   Select,
   Flex,
 } from "@chakra-ui/react";
-import {
-  ChangeEventHandler,
-  ForwardedRef,
-  forwardRef,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState, useMemo } from "react";
+import { Path, FieldValues, Control, useController } from "react-hook-form";
 
-interface IInputProps {
-  label?: string;
-  errorMsg?: string;
+interface IInputProps<IForm extends FieldValues> {
+  control: Control<IForm, string>;
+  label: string;
+  name: Path<IForm>;
   style?: StyleProps;
   data: { label: string; value: string | number }[];
-  onChange: ChangeEventHandler;
-  onBlur: ChangeEventHandler;
-  name: string;
-  min?: string | number;
-  max?: string | number;
-  maxLength?: number;
-  minLength?: number;
-  pattern?: string;
-  required?: boolean;
-  disabled?: boolean;
-  placeholder?: string;
-  setValue: any;
-  getValues: any;
 }
 
-export const AppSelect = forwardRef<HTMLSelectElement, IInputProps>(
-  (
-    { label, errorMsg, style = {}, data, setValue, getValues, ...input },
-    ref: ForwardedRef<HTMLSelectElement>
-  ) => {
-    const [aliasErrorMsg, setAliasErrorMsg] = useState("");
+export function AppSelect<IForm extends FieldValues>({
+  label,
+  control,
+  name,
+  data,
+  style = {},
+}: IInputProps<IForm>) {
+  const {
+    field: { onChange: onControlChange, value },
+    formState: { errors },
+  } = useController({
+    name,
+    control,
+  });
 
-    useEffect(() => {
-      if (errorMsg) setAliasErrorMsg(errorMsg);
+  const [aliasErrorMsg, setAliasErrorMsg] = useState("");
 
-      if (!errorMsg)
-        setTimeout(() => {
-          setAliasErrorMsg("");
-        }, 2000);
-    }, [errorMsg, setAliasErrorMsg]);
+  const errorMsg = useMemo<string>(
+    () => errors[name]?.message?.toString() || "",
+    [errors]
+  );
 
-    const onChange = (elem: any) => {
-      setValue(input.name, elem.target.value);
-    };
+  useEffect(() => {
+    if (errorMsg) setAliasErrorMsg(errorMsg);
 
-    return (
-      <Flex flexDir="column" {...style}>
-        {label && <FormLabel htmlFor={input.name}>{label}</FormLabel>}
-        <Select
-          id={input.name}
-          {...input}
-          isInvalid={!!errorMsg}
-          onChange={onChange}
-          value={getValues(input.name)}
-        >
-          {data.map(({ label, value }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </Select>
-        <Collapse in={!!errorMsg} animateOpacity>
-          <Text color="red.500" fontSize="sm">
-            {errorMsg || aliasErrorMsg}
-          </Text>
-        </Collapse>
-      </Flex>
-    );
-  }
-);
+    if (!errorMsg)
+      setTimeout(() => {
+        setAliasErrorMsg("");
+      }, 2000);
+  }, [errorMsg, setAliasErrorMsg]);
+
+  const onChange = (elem: any) => {
+    onControlChange(elem.target.value);
+  };
+
+  return (
+    <Flex flexDir="column" {...style}>
+      {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+      <Select
+        id={name}
+        isInvalid={!!errorMsg}
+        onChange={onChange}
+        value={value}
+      >
+        {data.map(({ label, value }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </Select>
+      <Collapse in={!!errorMsg} animateOpacity>
+        <Text color="red.500" fontSize="sm">
+          {errorMsg || aliasErrorMsg}
+        </Text>
+      </Collapse>
+    </Flex>
+  );
+}

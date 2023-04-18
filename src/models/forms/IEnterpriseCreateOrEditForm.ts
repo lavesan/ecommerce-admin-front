@@ -13,6 +13,8 @@ export interface IEnterpriseCreateOrEditForm {
   email: string;
   description: string;
   cnpj: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   phone: string;
   cep: string;
   street: string;

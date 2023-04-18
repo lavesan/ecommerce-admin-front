@@ -8,6 +8,8 @@ export interface IUpdateEnterpriseRequest {
   cnpj: string;
   phone: string;
   cep: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   street: string;
   complement: string;
   number: string;

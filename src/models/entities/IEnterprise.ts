@@ -12,6 +12,8 @@ export interface IEnterprise {
   description: string;
   cnpj: string;
   cep: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   phone: string;
   street: string;
   complement: string;

@@ -8,6 +8,8 @@ export interface ICreateEnterpriseRequest {
   cnpj: string;
   cep: string;
   phone: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   street: string;
   complement: string;
   number: string;

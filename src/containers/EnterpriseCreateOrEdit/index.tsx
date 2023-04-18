@@ -32,6 +32,7 @@ import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { generateImageKey } from "@helpers/image.helper";
 import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
+import { AppCheckbox } from "@components/AppCheckbox";
 
 const EnterpriseCreate = () => {
   const imageService = ImageService.getInstance();
@@ -65,6 +66,8 @@ const EnterpriseCreate = () => {
       street,
       freights,
       schedules,
+      estimatedTime,
+      isDisabled,
     } = enterprise;
 
     return {
@@ -80,6 +83,8 @@ const EnterpriseCreate = () => {
       phone,
       state,
       street,
+      estimatedTime,
+      isDisabled,
       freights:
         freights?.map(({ addressKey, addressValue, value, id }) => ({
           freightId: id,
@@ -234,6 +239,13 @@ const EnterpriseCreate = () => {
       <Flex width={["100%", "300px"]} marginBlock={4}>
         <AppImageInput imageSrc={savedImage} onImageChange={onImageChange} />
       </Flex>
+      <Flex marginBottom={8} marginTop={4}>
+        <AppCheckbox<IEnterpriseCreateOrEditForm>
+          label="Desabilitar"
+          control={control}
+          name="isDisabled"
+        />
+      </Flex>
       <Flex as="form" flexDir="column" onSubmit={onSubmit}>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
           <AppInput
@@ -253,25 +265,21 @@ const EnterpriseCreate = () => {
           />
         </Flex>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
-          <AppMaskInput
+          <AppMaskInput<IEnterpriseCreateOrEditForm>
             mask={phoneMask}
-            aria-label="phone"
             label="Telefone"
-            {...register("phone")}
+            name="phone"
+            control={control}
+            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
             errorMsg={errors.phone?.message}
-            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-            setValue={setValue}
-            value={getValues("phone")}
           />
-          <AppMaskInput
+          <AppMaskInput<IEnterpriseCreateOrEditForm>
             mask={cnpjMask}
-            aria-label="cnpj"
             label="CNPJ"
-            {...register("cnpj")}
-            errorMsg={errors.cnpj?.message}
+            name="cnpj"
+            control={control}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-            setValue={setValue}
-            value={getValues("cnpj")}
+            errorMsg={errors.cnpj?.message}
           />
         </Flex>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
@@ -282,11 +290,25 @@ const EnterpriseCreate = () => {
             errorMsg={errors.description?.message}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
           />
+          <AppMaskInput<IEnterpriseCreateOrEditForm>
+            mask={timeMask}
+            aria-label="estimatedTime"
+            label="Tempo Estimado (horas)"
+            name="estimatedTime"
+            control={control}
+            errorMsg={errors.estimatedTime?.message}
+            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+          />
         </Flex>
         <Heading as="h3" size="lg" marginBottom={4}>
           Endereço
         </Heading>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4} width="100%">
+        <Grid
+          templateColumns="repeat(2, 1fr)"
+          gap={4}
+          width="100%"
+          marginBottom={[0, 4]}
+        >
           <GridItem colSpan={[2, 1]}>
             <AppInput
               aria-label="cep"
@@ -297,15 +319,12 @@ const EnterpriseCreate = () => {
             />
           </GridItem>
           <GridItem colSpan={[2, 1]}>
-            <AppSelect
+            <AppSelect<IEnterpriseCreateOrEditForm>
               data={citiesOptions}
-              aria-label="city"
               label="Cidade"
-              {...register("city")}
-              errorMsg={errors.city?.message}
+              name="city"
+              control={control}
               style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-              setValue={setValue}
-              getValues={getValues}
             />
           </GridItem>
         </Grid>
@@ -377,43 +396,32 @@ const EnterpriseCreate = () => {
             </Flex>
             <Grid templateColumns="repeat(3, 1fr)" gap={4}>
               <GridItem colSpan={[3, 1]}>
-                <AppSelect
+                <AppSelect<IEnterpriseCreateOrEditForm>
                   data={weekDayOptions}
-                  aria-label={`schedules.${index}.weekDay`}
                   label="Dia da semana"
-                  {...register(`schedules.${index}.weekDay`)}
-                  errorMsg={
-                    errors.schedules &&
-                    errors.schedules[index]?.weekDay?.message
-                  }
+                  name={`schedules.${index}.weekDay`}
+                  control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                  setValue={setValue}
-                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[3, 1]}>
-                <AppSelect
+                <AppSelect<IEnterpriseCreateOrEditForm>
                   data={scheduleRelationOptions}
-                  aria-label={`schedules.${index}.relation`}
+                  name={`schedules.${index}.relation`}
                   label="Relação"
-                  {...register(`schedules.${index}.relation`)}
-                  errorMsg={
-                    errors.schedules &&
-                    errors.schedules[index]?.relation?.message
-                  }
+                  control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                  setValue={setValue}
-                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[3, 1]}>
-                <AppInput
-                  aria-label={`schedules.${index}.time`}
-                  label="Tempo"
-                  {...register(`schedules.${index}.time`)}
+                <AppMaskInput<IEnterpriseCreateOrEditForm>
+                  mask={timeMask}
+                  label="Tempo (horas)"
+                  name={`schedules.${index}.time`}
                   errorMsg={
                     errors.schedules && errors.schedules[index]?.time?.message
                   }
+                  control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
               </GridItem>
@@ -462,31 +470,20 @@ const EnterpriseCreate = () => {
             </Flex>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
               <GridItem colSpan={[2, 1]}>
-                <AppSelect
+                <AppSelect<IEnterpriseCreateOrEditForm>
                   data={districtOptions}
-                  aria-label={`freights.${index}.addressValue`}
                   label="Bairro"
-                  {...register(`freights.${index}.addressValue`)}
-                  errorMsg={
-                    errors.freights &&
-                    errors.freights[index]?.addressValue?.message
-                  }
+                  name={`freights.${index}.addressValue`}
+                  control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                  setValue={setValue}
-                  getValues={getValues}
                 />
               </GridItem>
               <GridItem colSpan={[2, 1]}>
-                <AppCurrencyInput
-                  aria-label={`freights.${index}.value`}
+                <AppCurrencyInput<IEnterpriseCreateOrEditForm>
                   label="Valor"
-                  {...register(`freights.${index}.value`)}
-                  errorMsg={
-                    errors.freights && errors.freights[index]?.value?.message
-                  }
+                  name={`freights.${index}.value`}
+                  control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                  setValue={setValue}
-                  getValues={getValues}
                 />
               </GridItem>
             </Grid>

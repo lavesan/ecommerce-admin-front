@@ -58,8 +58,8 @@ const Enterprises = () => {
       label: "CNPJ",
     },
     {
-      id: "created_at",
-      label: "Data de criação",
+      id: "isDisabled",
+      label: "Está desabilitada",
     },
     {
       id: "id",
@@ -104,8 +104,9 @@ const Enterprises = () => {
 
     const mappedResult = {
       ...result,
-      data: result.data.map(({ created_at, cnpj, ...elem }) => ({
+      data: result.data.map(({ created_at, cnpj, isDisabled, ...elem }) => ({
         ...elem,
+        isDisabled: isDisabled ? "Sim" : "Não",
         cnpj: maskCnpj(cnpj),
         created_at: maskDate(created_at),
       })),

@@ -12,6 +12,8 @@ export interface IFormatPaginateEnterprise {
   cnpj: string;
   cep: string;
   street: string;
+  estimatedTime: string;
+  isDisabled: string;
   complement: string;
   number: string;
   district: string;
