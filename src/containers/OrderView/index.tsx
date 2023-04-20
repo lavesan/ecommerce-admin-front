@@ -1,5 +1,13 @@
-import { Card, Heading, Text } from "@chakra-ui/react";
+import {
+  Card,
+  Heading,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { AppLabelValue } from "@components/AppLabelValue";
+import { OrderStatus } from "@enums/OrderStatus.enum";
 import {
   dbNumberMoneyToNumber,
   maskMoney,
@@ -19,7 +27,16 @@ const OrderView = () => {
 
   const { setIsLoading } = useAppContext();
 
+  const [status, setStatus] = useState<OrderStatus>();
+
   const [order, setOrder] = useState<IOrder>({} as IOrder);
+
+  const onStatusChange = async (newStatus: OrderStatus) => {
+    if (orderId) {
+      await orderService.updateStatus(orderId, { status: newStatus });
+      onInit();
+    }
+  };
 
   const onInit = useCallback(async () => {
     if (orderId) {
@@ -27,6 +44,7 @@ const OrderView = () => {
         .findById(orderId)
         .finally(() => setIsLoading(false));
 
+      setStatus(res.status);
       setOrder(res);
     }
   }, []);
@@ -37,9 +55,22 @@ const OrderView = () => {
 
   return (
     <>
-      <Heading as="h1" size="lg">
+      <Heading as="h1" size="lg" marginBottom={4}>
         Pedido
       </Heading>
+      <RadioGroup onChange={onStatusChange} value={status}>
+        <Stack direction="row">
+          <Radio
+            value={OrderStatus.TO_APPROVE}
+            isDisabled={status !== OrderStatus.TO_APPROVE}
+          >
+            A Aprovar
+          </Radio>
+          <Radio value={OrderStatus.DOING}>Fazendo</Radio>
+          <Radio value={OrderStatus.SENDING}>A caminho</Radio>
+          <Radio value={OrderStatus.DONE}>Feita</Radio>
+        </Stack>
+      </RadioGroup>
       <Text fontWeight="bold" textAlign={["center", "start"]} marginBlock={4}>
         {order.id}
       </Text>

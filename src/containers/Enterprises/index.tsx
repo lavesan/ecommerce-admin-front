@@ -1,5 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AppTable } from "@components/AppTable";
@@ -25,6 +25,7 @@ import {
   HiServerRef,
   HiShoppingCartRef,
 } from "@components/RefIcons";
+import { useUser } from "@hooks/useUser";
 
 const Enterprises = () => {
   const enterpriseService = EnterpriseService.getInstance();
@@ -34,6 +35,8 @@ const Enterprises = () => {
   const navigate = useNavigate();
 
   const { setIsLoading } = useAppContext();
+
+  const { isAdmin } = useUser();
 
   const [data, setData] =
     useState<IPaginationResponse<IFormatPaginateEnterprise>>();
@@ -66,32 +69,43 @@ const Enterprises = () => {
       label: "Ações",
       accessor: ({ id }) => (
         <AppTableActions
-          actions={[
-            {
-              id,
-              title: "Pedidos",
-              icon: HiShoppingCartRef,
-              onClick: () => goToOrders(id),
-            },
-            {
-              id,
-              title: "Categorias",
-              icon: HiServerRef,
-              onClick: () => goToCategories(id),
-            },
-            {
-              id,
-              title: "Promoções",
-              icon: HiGiftRef,
-              onClick: () => goToPromotions(id),
-            },
-            {
-              id,
-              title: "Editar",
-              icon: HiPencilRef,
-              onClick: () => goToEdit(id),
-            },
-          ]}
+          actions={
+            isAdmin
+              ? [
+                  {
+                    id,
+                    title: "Pedidos",
+                    icon: HiShoppingCartRef,
+                    onClick: () => goToOrders(id),
+                  },
+                  {
+                    id,
+                    title: "Categorias",
+                    icon: HiServerRef,
+                    onClick: () => goToCategories(id),
+                  },
+                  {
+                    id,
+                    title: "Promoções",
+                    icon: HiGiftRef,
+                    onClick: () => goToPromotions(id),
+                  },
+                  {
+                    id,
+                    title: "Editar",
+                    icon: HiPencilRef,
+                    onClick: () => goToEdit(id),
+                  },
+                ]
+              : [
+                  {
+                    id,
+                    title: "Pedidos",
+                    icon: HiShoppingCartRef,
+                    onClick: () => goToOrders(id),
+                  },
+                ]
+          }
         />
       ),
     },
@@ -165,9 +179,11 @@ const Enterprises = () => {
         marginBottom={8}
       >
         <FilterForm onFilter={onFilter} />
-        <Button onClick={goToAdd} colorScheme="green" marginBottom={[4, 0]}>
-          Adicionar
-        </Button>
+        {isAdmin && (
+          <Button onClick={goToAdd} colorScheme="green" marginBottom={[4, 0]}>
+            Adicionar
+          </Button>
+        )}
       </Flex>
       {data &&
         (isMobile ? (

@@ -11,6 +11,7 @@ import {
 
 import { SidebarLink } from "../Sidebar/SidebarLink";
 import { useLocation } from "react-router-dom";
+import { useUser } from "@hooks/useUser";
 
 interface ILinksProps {
   onLinkClick?: VoidFunction;
@@ -18,6 +19,8 @@ interface ILinksProps {
 
 export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
   const { pathname } = useLocation();
+
+  const { isAdmin } = useUser();
 
   return (
     <>
@@ -29,22 +32,26 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         marginBottom={1}
         onClick={onLinkClick}
       /> */}
-      <SidebarLink
-        icon={HiUserGroup}
-        to="/usuarios"
-        label="Usuários"
-        isActive={pathname.includes("/usuarios")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
-      <SidebarLink
-        icon={HiThumbUp}
-        to="/clientes"
-        label="Clientes"
-        isActive={pathname.includes("/clientes")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
+      {isAdmin && (
+        <SidebarLink
+          icon={HiUserGroup}
+          to="/usuarios"
+          label="Usuários"
+          isActive={pathname.includes("/usuarios")}
+          marginBottom={1}
+          onClick={onLinkClick}
+        />
+      )}
+      {isAdmin && (
+        <SidebarLink
+          icon={HiThumbUp}
+          to="/clientes"
+          label="Clientes"
+          isActive={pathname.includes("/clientes")}
+          marginBottom={1}
+          onClick={onLinkClick}
+        />
+      )}
       <SidebarLink
         icon={HiOfficeBuilding}
         to="/empresas"
