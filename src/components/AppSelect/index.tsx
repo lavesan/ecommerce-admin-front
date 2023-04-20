@@ -64,6 +64,7 @@ export function AppSelect<IForm extends FieldValues>({
         value={value}
         {...select}
       >
+        <option value="">Selecione uma opção</option>
         {data.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}

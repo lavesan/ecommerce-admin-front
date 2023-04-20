@@ -1,34 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Card, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./validations";
 import { AppImageInput } from "@components/AppImageInput";
-import { AppSelect } from "@components/AppSelect";
 import { AppInput } from "@components/AppInput";
-import { EnterpriseService } from "@services/enterprise.service";
 import { useAppContext } from "@hooks/useAppContext";
 import { useAppToast } from "@hooks/useSuccessToast";
-import {
-  citiesOptions,
-  districtOptions,
-  scheduleRelationOptions,
-  weekDayOptions,
-} from "@helpers/select.helper";
-import { useUser } from "@hooks/useUser";
-import { AppMaskInput } from "@components/AppMaskInput";
-import { cnpjMask, phoneMask, timeMask, unmask } from "@helpers/mask.helper";
-import { AppCurrencyInput } from "@components/AppCurrencyInput";
-import {
-  dbNumberMoneyToNumber,
-  numberToNumberMoneyDb,
-} from "@helpers/format.helper";
-import { WeekDay } from "@enums/WeekDay.enum";
-import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { useGetImageRequest } from "@hooks/useGetImageRequest";
-import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { ICategoryCreateOrEditForm } from "@models/forms/ICategoryCreateOrEditForm";
@@ -41,7 +22,6 @@ const CategoryCreateOrEdit = () => {
   const { id: enterpriseId, categoryId } = useParams();
 
   const { setIsLoading } = useAppContext();
-  const { id: userId } = useUser();
   const { showToast } = useAppToast();
 
   const [imageKey, setImageKey] = useState("");

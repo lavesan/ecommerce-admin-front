@@ -234,8 +234,6 @@ const ProductCreateOrEdit = () => {
     reset(enterpriseForm);
   }, [enterpriseForm]);
 
-  useEffect(() => console.log("errors: ", errors), [errors]);
-
   return (
     <>
       <Heading as="h2" size="lg">

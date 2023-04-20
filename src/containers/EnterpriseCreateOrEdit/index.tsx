@@ -14,7 +14,6 @@ import { useAppToast } from "@hooks/useSuccessToast";
 import {
   citiesOptions,
   districtOptions,
-  scheduleRelationOptions,
   weekDayOptions,
 } from "@helpers/select.helper";
 import { IEnterpriseCreateOrEditForm } from "@models/forms/IEnterpriseCreateOrEditForm";
@@ -28,7 +27,6 @@ import {
   numberToNumberMoneyDb,
 } from "@helpers/format.helper";
 import { WeekDay } from "@enums/WeekDay.enum";
-import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 import { AppCheckbox } from "@components/AppCheckbox";

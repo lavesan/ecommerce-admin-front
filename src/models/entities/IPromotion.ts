@@ -8,6 +8,7 @@ export interface IPromotion {
   description: string;
   imageKey: string;
   weekDay: WeekDay;
+  isDisabled: boolean;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async paginate(
-    params: IPaginationRequest & IPaginateUserFilter
+    params: IPaginationRequest & Partial<IPaginateUserFilter>
   ): Promise<IPaginationResponse<IUser>> {
     const res = await server.get<IPaginationResponse<IUser>>("/user", {
       params,

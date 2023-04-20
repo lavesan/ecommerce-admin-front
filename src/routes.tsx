@@ -20,6 +20,7 @@ import ProductCreateOrEdit from "@containers/ProductCreateOrEdit";
 import OrderView from "@containers/OrderView";
 import ClientCreateOrEdit from "@containers/ClientCreateOrEdit";
 import PromotionCreateOrEdit from "@containers/PromotionCreateOrEdit";
+import UserCreateOrEdit from "@containers/UserCreateOrEdit";
 
 const Router = () => {
   useAuthenticate();
@@ -51,11 +52,11 @@ const Router = () => {
         <Route path="/empresas/:id/categorias" element={<Categories />} />
         <Route path="/empresas/:id/promocoes" element={<Promotions />} />
         <Route
-          path="/empresas/:id/promocoes/criar"
+          path="/empresas/:enterpriseId/promocoes/criar"
           element={<PromotionCreateOrEdit />}
         />
         <Route
-          path="/empresas/:id/promocoes/:promotionId"
+          path="/empresas/:enterpriseId/promocoes/:promotionId"
           element={<PromotionCreateOrEdit />}
         />
         <Route
@@ -79,6 +80,8 @@ const Router = () => {
           element={<ProductCreateOrEdit />}
         />
         <Route path="/usuarios" element={<Users />} />
+        <Route path="/usuarios/criar" element={<UserCreateOrEdit />} />
+        <Route path="/usuarios/:userId" element={<UserCreateOrEdit />} />
         <Route path="/clientes" element={<Clients />} />
         <Route path="/clientes/criar" element={<ClientCreateOrEdit />} />
         <Route path="/clientes/:clientId" element={<ClientCreateOrEdit />} />

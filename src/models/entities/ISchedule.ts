@@ -1,4 +1,3 @@
-import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { WeekDay } from "@enums/WeekDay.enum";
 import { IEnterprise } from "./IEnterprise";
 

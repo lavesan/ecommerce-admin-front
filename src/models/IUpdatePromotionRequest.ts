@@ -7,7 +7,8 @@ export interface IUpdatePromotionRequest {
   weekDay: WeekDay;
   enterpriseId: string;
   products: {
-    id: string;
+    id?: string;
     value: number;
+    productId: string;
   }[];
 }

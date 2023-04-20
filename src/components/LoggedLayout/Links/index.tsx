@@ -28,7 +28,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         isActive={pathname === "/"}
         marginBottom={1}
         onClick={onLinkClick}
-      />
+      /> */}
       <SidebarLink
         icon={HiUserGroup}
         to="/usuarios"
@@ -36,7 +36,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
         isActive={pathname.includes("/usuarios")}
         marginBottom={1}
         onClick={onLinkClick}
-      /> */}
+      />
       <SidebarLink
         icon={HiThumbUp}
         to="/clientes"

@@ -35,6 +35,11 @@ export class ProductService {
     return res.data;
   }
 
+  async findByEnterpriseId(id: string): Promise<IProduct[]> {
+    const res = await server.get<IProduct[]>(`/product/enterprise/${id}`);
+    return res.data;
+  }
+
   static getInstance() {
     if (!this.INSTANCE) this.INSTANCE = new ProductService();
     return this.INSTANCE;

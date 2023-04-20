@@ -1,11 +1,15 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, StyleProps, Text } from "@chakra-ui/react";
 
-interface IAppLabelValueProps {
+interface IAppLabelValueProps extends StyleProps {
   label: string;
-  value: string | number | JSX.Element;
+  value?: string | number | JSX.Element;
 }
 
-export const AppLabelValue = ({ label, value }: IAppLabelValueProps) => {
+export const AppLabelValue = ({
+  label,
+  value,
+  ...style
+}: IAppLabelValueProps) => {
   return (
     <Flex
       flexDir="row"
@@ -14,6 +18,7 @@ export const AppLabelValue = ({ label, value }: IAppLabelValueProps) => {
       borderBottom="thin dotted"
       borderBottomColor="gray.600"
       marginBottom={2}
+      {...style}
     >
       <Text fontWeight="600">{label}</Text>
       <Text>{value}</Text>

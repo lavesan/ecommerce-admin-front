@@ -1,21 +1,19 @@
 import { Card, Flex, IconButton } from "@chakra-ui/react";
 import { AppLabelValue } from "@components/AppLabelValue";
-import { HiPencilRef, HiShoppingBagRef } from "@components/RefIcons";
-import { IFormatPaginateProduct } from "@models/IFormatPaginateProduct";
+import { HiPencilRef } from "@components/RefIcons";
+import { IFormatPaginateUser } from "@models/IFormatPaginateUser";
 
-interface IUserCardProps extends IFormatPaginateProduct {
+interface IUserCardProps extends IFormatPaginateUser {
   goToEdit: (id: string) => void;
 }
 
-export const ProductCard = ({
+export const UserCard = ({
   goToEdit,
   id,
   name,
+  email,
+  isAdmin,
   created_at,
-  isDisabled,
-  value,
-  givenPoints,
-  sellPoints,
 }: IUserCardProps) => {
   return (
     <Card padding={4} marginBottom={4}>
@@ -34,10 +32,8 @@ export const ProductCard = ({
         />
       </Flex>
       <AppLabelValue label="Nome" value={name} />
-      <AppLabelValue label="Está desabilitada" value={isDisabled} />
-      <AppLabelValue label="Valor" value={value} />
-      <AppLabelValue label="Pontos que dá" value={givenPoints} />
-      <AppLabelValue label="Pontos que é vendido" value={sellPoints} />
+      <AppLabelValue label="email" value={email} />
+      <AppLabelValue label="É admin" value={isAdmin} />
       <AppLabelValue label="Data de criação" value={created_at} />
     </Card>
   );

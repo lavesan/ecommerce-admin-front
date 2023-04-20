@@ -7,7 +7,7 @@ export interface ICreatePromotionRequest {
   weekDay: WeekDay;
   enterpriseId: string;
   products: {
-    id: string;
     value: number;
+    productId: string;
   }[];
 }

@@ -6,7 +6,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import axiosRetry, { isRetryableError } from "axios-retry";
+// import axiosRetry, { isRetryableError } from "axios-retry";
 import { useEffect, useContext } from "react";
 
 export const server = axios.create({
@@ -67,10 +67,10 @@ export const AxiosInterceptorHOC = ({
       errResInterceptor
     );
 
-    return () => {
-      server.interceptors.request.eject(reqInterceptor);
-      server.interceptors.response.eject(resInterceptor);
-    };
+    // return () => {
+    //   server.interceptors.request.eject(reqInterceptor);
+    //   server.interceptors.response.eject(resInterceptor);
+    // };
   }, [setIsLoading]);
 
   return children;
