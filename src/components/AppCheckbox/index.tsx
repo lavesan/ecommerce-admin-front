@@ -1,16 +1,18 @@
-import { Checkbox } from "@chakra-ui/react";
+import { Checkbox, StyleProps } from "@chakra-ui/react";
 import { Path, FieldValues, Control, useController } from "react-hook-form";
 
 interface IAppCheckboxProps<IForm extends FieldValues> {
   control: Control<IForm, string>;
   label: string;
   name: Path<IForm>;
+  style?: StyleProps;
 }
 
 export function AppCheckbox<IForm extends FieldValues>({
   label,
   control,
   name,
+  style,
 }: IAppCheckboxProps<IForm>) {
   const {
     field: { onChange: onControlChange, value },
@@ -23,7 +25,8 @@ export function AppCheckbox<IForm extends FieldValues>({
     <Checkbox
       colorScheme="green"
       isChecked={value}
-      onChange={(elem) => onControlChange(name, elem.target.checked)}
+      onChange={() => onControlChange(!value)}
+      {...style}
     >
       {label}
     </Checkbox>

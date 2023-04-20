@@ -1,6 +1,7 @@
 import { server } from "@config/axios.config";
-import { ICreateCategory } from "@models/ICreateCategoryRequest";
+import { ICreateCategoryRequest } from "@models/ICreateCategoryRequest";
 import { IPaginateCategoryRequest } from "@models/IPaginateCategoryRequest";
+import { IUpdateCategoryRequest } from "@models/IUpdateCategoryRequest";
 import { ICategory } from "@models/entities/ICategory";
 import {
   IPaginationRequest,
@@ -24,12 +25,12 @@ export class CategoryService {
     return res.data;
   }
 
-  async create(body: ICreateCategory): Promise<ICategory> {
+  async create(body: ICreateCategoryRequest): Promise<ICategory> {
     const res = await server.post<ICategory>("/category", body);
     return res.data;
   }
 
-  async update(id: string, body: Partial<ICategory>): Promise<boolean> {
+  async update(id: string, body: IUpdateCategoryRequest): Promise<boolean> {
     const res = await server.put<boolean>(`/category/${id}`, body);
     return res.data;
   }

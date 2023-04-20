@@ -6,7 +6,6 @@ interface IUpdateProductAdditionalCategory {
   description: string;
   limit: number;
   type: ProductAdditionalType;
-  imageKey: string;
   isOptional: boolean;
   productAdditionals: {
     id?: string;

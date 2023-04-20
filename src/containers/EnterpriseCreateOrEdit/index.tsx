@@ -1,10 +1,11 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
-import { AppImageInput } from "@components/AppImageInput";
 import { useParams } from "react-router-dom";
-import { useForm, useFieldArray, useWatch } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./validations";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { AppImageInput } from "@components/AppImageInput";
 import { AppSelect } from "@components/AppSelect";
 import { AppInput } from "@components/AppInput";
 import { EnterpriseService } from "@services/enterprise.service";
@@ -16,7 +17,6 @@ import {
   scheduleRelationOptions,
   weekDayOptions,
 } from "@helpers/select.helper";
-import { ImageService } from "@services/image.service";
 import { IEnterpriseCreateOrEditForm } from "@models/forms/IEnterpriseCreateOrEditForm";
 import { IEnterprise } from "@models/entities/IEnterprise";
 import { useUser } from "@hooks/useUser";
@@ -29,13 +29,12 @@ import {
 } from "@helpers/format.helper";
 import { WeekDay } from "@enums/WeekDay.enum";
 import { ScheduleRelation } from "@enums/ScheduleRelation";
-import { generateImageKey } from "@helpers/image.helper";
 import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 import { AppCheckbox } from "@components/AppCheckbox";
+import { useSaveImage } from "@hooks/useSaveImage";
 
-const EnterpriseCreate = () => {
-  const imageService = ImageService.getInstance();
+const EnterpriseCreateOrEdit = () => {
   const enterpriseService = EnterpriseService.getInstance();
 
   const { id } = useParams();
@@ -47,6 +46,7 @@ const EnterpriseCreate = () => {
   const [imageKey, setImageKey] = useState("");
 
   const { data: savedImage } = useGetImageRequest(imageKey);
+  const { saveImage } = useSaveImage();
 
   const [enterprise, setEnterprise] = useState<IEnterprise>({} as IEnterprise);
 
@@ -109,8 +109,6 @@ const EnterpriseCreate = () => {
     control,
     handleSubmit,
     register,
-    setValue,
-    getValues,
     reset,
     formState: { errors },
   } = useForm<IEnterpriseCreateOrEditForm>({
@@ -174,24 +172,11 @@ const EnterpriseCreate = () => {
     }
 
     if (imageChanged && image) {
-      if (imageKey) {
-        await imageService.deleteByKey(imageKey).catch(() => {
-          setIsLoading(false);
-          throw new Error();
-        });
-      }
-
-      const imageRes = await imageService
-        .save({
-          file: image,
-          key: generateImageKey("product"),
-        })
-        .catch(() => {
-          setIsLoading(false);
-          throw new Error();
-        });
-
-      imageKey = imageRes.key;
+      imageKey = await saveImage({
+        oldImageKey: imageKey,
+        preffix: "enterprise",
+        file: image,
+      });
     }
 
     let successMsg = "";
@@ -497,4 +482,4 @@ const EnterpriseCreate = () => {
   );
 };
 
-export default EnterpriseCreate;
+export default EnterpriseCreateOrEdit;

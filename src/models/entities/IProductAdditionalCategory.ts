@@ -8,7 +8,6 @@ export interface IProductAdditionalCategory {
   description: string;
   limit: number;
   type: ProductAdditionalType;
-  imageKey: string;
   isDisabled: boolean;
   isOptional: boolean;
   created_at: Date;

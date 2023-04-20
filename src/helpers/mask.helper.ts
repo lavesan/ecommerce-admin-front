@@ -3,4 +3,6 @@ export const cnpjMask = "99.999.999/9999-99";
 export const cpfMask = "999.999.999-99";
 export const timeMask = "99:99";
 
+export const onlyNumberMask = (value: string) => value.replace(/\D/g, "");
+
 export const unmask = (value: string) => value.replace(/\D/g, "");

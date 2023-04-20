@@ -24,6 +24,7 @@ interface IInputProps {
   label?: string;
   errorMsg?: string;
   style?: StyleProps;
+  beforeChange?: (value: string) => string;
   onChange: ChangeEventHandler;
   onBlur: ChangeEventHandler;
   name: string;
@@ -40,7 +41,7 @@ interface IInputProps {
 
 export const AppInput = forwardRef<HTMLInputElement, IInputProps>(
   (
-    { label, errorMsg, type, style = {}, ...input },
+    { label, errorMsg, type, style = {}, beforeChange, onChange, ...input },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [aliasErrorMsg, setAliasErrorMsg] = useState("");
@@ -68,7 +69,17 @@ export const AppInput = forwardRef<HTMLInputElement, IInputProps>(
       <FormControl isInvalid={!!errorMsg} {...style}>
         {label && <FormLabel htmlFor={input.name}>{label}</FormLabel>}
         <InputGroup>
-          <Input ref={ref} id={input.name} type={inputType} {...input} />
+          <Input
+            ref={ref}
+            id={input.name}
+            type={inputType}
+            {...input}
+            onChange={(elem) => {
+              if (beforeChange)
+                elem.target.value = beforeChange(elem.target.value);
+              onChange(elem);
+            }}
+          />
           {type === "password" && (
             <InputRightElement>
               {showPwd ? (

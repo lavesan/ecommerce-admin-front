@@ -1,6 +1,7 @@
 import { getCities } from "@brazilian-utils/brazilian-utils";
 import { OrderStatus } from "@enums/OrderStatus.enum";
 import { PaymentType } from "@enums/PaymentType.enum";
+import { ProductAdditionalType } from "@enums/ProductAdditionalType.enum";
 import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { WeekDay } from "@enums/WeekDay.enum";
 
@@ -85,3 +86,11 @@ export const scheduleRelationOptions = Object.values(ScheduleRelation).map(
     value: schedule,
   })
 );
+
+export const additionaCategoryTypeOptions = [
+  { label: "Selecionar um", value: ProductAdditionalType.ONE_SELECT },
+  {
+    label: "Selecionar vários",
+    value: ProductAdditionalType.MORE_THAN_ONE_SELECT,
+  },
+];
