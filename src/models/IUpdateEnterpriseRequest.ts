@@ -1,4 +1,3 @@
-import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { WeekDay } from "@enums/WeekDay.enum";
 
 export interface IUpdateEnterpriseRequest {
@@ -26,8 +25,8 @@ export interface IUpdateEnterpriseRequest {
   }[];
   schedules?: {
     id?: string | undefined;
-    time: Date;
-    relation: ScheduleRelation;
+    from: Date;
+    to: Date;
     weekDay: WeekDay;
   }[];
 }

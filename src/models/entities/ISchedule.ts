@@ -4,8 +4,8 @@ import { IEnterprise } from "./IEnterprise";
 
 export interface ISchedule {
   id: string;
-  time: Date;
-  relation: ScheduleRelation;
+  from: Date;
+  to: Date;
   weekDay: WeekDay;
   created_at: Date;
   updated_at: Date;

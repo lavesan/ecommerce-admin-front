@@ -1,14 +1,14 @@
 import { ProductAdditionalType } from "@enums/ProductAdditionalType.enum";
 
 interface IUpdateProductAdditionalCategory {
-  id?: string;
+  id?: string | null;
   name: string;
   description: string;
   limit: number;
   type: ProductAdditionalType;
   isOptional: boolean;
   productAdditionals: {
-    id?: string;
+    id?: string | null;
     name: string;
     imageKey: string;
     value: number;

@@ -51,13 +51,13 @@ export const validationSchema = yup.object({
       yup
         .object({
           scheduleId: yup.string().uuid().notRequired(),
-          time: yup
+          from: yup
             .string()
             .matches(timeReg, TIME_ERROR)
             .required(REQUIRED_ERROR),
-          relation: yup
-            .mixed()
-            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
+          to: yup
+            .string()
+            .matches(timeReg, TIME_ERROR)
             .required(REQUIRED_ERROR),
           weekDay: yup
             .mixed()

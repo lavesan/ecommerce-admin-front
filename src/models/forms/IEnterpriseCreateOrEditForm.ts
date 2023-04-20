@@ -1,10 +1,9 @@
-import { ScheduleRelation } from "@enums/ScheduleRelation";
 import { WeekDay } from "@enums/WeekDay.enum";
 
 export interface IEnterpriseCreateOrEditFormSchedule {
   scheduleId?: string | undefined;
-  time: string;
-  relation: ScheduleRelation;
+  from: string;
+  to: string;
   weekDay: WeekDay;
 }
 

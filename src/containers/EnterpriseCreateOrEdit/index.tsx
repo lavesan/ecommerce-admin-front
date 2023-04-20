@@ -93,10 +93,10 @@ const EnterpriseCreateOrEdit = () => {
           value: dbNumberMoneyToNumber(value),
         })) || [],
       schedules:
-        schedules?.map(({ id, relation, time, weekDay }) => ({
+        schedules?.map(({ id, from, to, weekDay }) => ({
           scheduleId: id,
-          relation,
-          time: extractTimeFromDate(time),
+          from: extractTimeFromDate(from),
+          to: extractTimeFromDate(to),
           weekDay,
         })) || [],
     };
@@ -153,14 +153,15 @@ const EnterpriseCreateOrEdit = () => {
     freights:
       freights?.map(({ freightId, value, ...freight }) => ({
         ...freight,
-        id: freightId,
+        id: freightId || undefined,
         value: numberToNumberMoneyDb(value),
       })) || [],
     schedules:
-      schedules?.map(({ scheduleId, time, ...schedule }) => ({
+      schedules?.map(({ scheduleId, from, to, ...schedule }) => ({
         ...schedule,
-        id: scheduleId,
-        time: timeStringToDate(time),
+        id: scheduleId || undefined,
+        from: timeStringToDate(from),
+        to: timeStringToDate(to),
       })) || [],
   });
 
@@ -359,8 +360,8 @@ const EnterpriseCreateOrEdit = () => {
             onClick={() =>
               appendSchedule({
                 weekDay: WeekDay.DOM,
-                time: "",
-                relation: ScheduleRelation.FROM,
+                from: "",
+                to: "",
               })
             }
             type="button"
@@ -390,10 +391,13 @@ const EnterpriseCreateOrEdit = () => {
                 />
               </GridItem>
               <GridItem colSpan={[3, 1]}>
-                <AppSelect<IEnterpriseCreateOrEditForm>
-                  data={scheduleRelationOptions}
-                  name={`schedules.${index}.relation`}
-                  label="Relação"
+                <AppMaskInput<IEnterpriseCreateOrEditForm>
+                  mask={timeMask}
+                  label="De (horas)"
+                  name={`schedules.${index}.from`}
+                  errorMsg={
+                    errors.schedules && errors.schedules[index]?.from?.message
+                  }
                   control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
@@ -401,10 +405,10 @@ const EnterpriseCreateOrEdit = () => {
               <GridItem colSpan={[3, 1]}>
                 <AppMaskInput<IEnterpriseCreateOrEditForm>
                   mask={timeMask}
-                  label="Tempo (horas)"
-                  name={`schedules.${index}.time`}
+                  label="Até (horas)"
+                  name={`schedules.${index}.to`}
                   errorMsg={
-                    errors.schedules && errors.schedules[index]?.time?.message
+                    errors.schedules && errors.schedules[index]?.to?.message
                   }
                   control={control}
                   style={{ marginBottom: [4, 0], marginRight: [0, 4] }}

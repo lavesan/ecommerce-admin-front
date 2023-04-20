@@ -84,7 +84,7 @@ const ProductCreateOrEdit = () => {
       name,
       description,
       boldDescription,
-      value,
+      value: dbNumberMoneyToNumber(value),
       imageKey,
       sellPoints,
       givenPoints,
@@ -114,7 +114,7 @@ const ProductCreateOrEdit = () => {
                   additionalId: id,
                   isDisabled,
                   name,
-                  value,
+                  value: dbNumberMoneyToNumber(value),
                   imageKey,
                 })
               ) || [],
@@ -131,7 +131,6 @@ const ProductCreateOrEdit = () => {
     handleSubmit,
     register,
     reset,
-    getValues,
     setValue,
     formState: { errors },
   } = useForm<IProductCreateOrEditForm>({
@@ -149,26 +148,18 @@ const ProductCreateOrEdit = () => {
     name: "productAdditionalCategory",
   });
 
-  // const {
-  //   fields: scheduleFields,
-  //   append: appendSchedule,
-  //   remove: removeSchedule,
-  // } = useFieldArray({
-  //   control,
-  //   name: "schedules",
-  // });
-
   const onImageChange = (file: File) => {
     setImageChanged(true);
     setImage(file);
   };
 
-  const mountBody = ({
-    productAdditionalCategory,
-    ...body
-  }: IProductCreateOrEditForm) => ({
+  const mountBody = (
+    { productAdditionalCategory, value, ...body }: IProductCreateOrEditForm,
+    imageKey: string
+  ) => ({
     ...body,
     imageKey,
+    value: numberToNumberMoneyDb(value),
     categoryId: categoryId || "",
     productAdditionalCategory:
       productAdditionalCategory?.map(
@@ -178,12 +169,15 @@ const ProductCreateOrEdit = () => {
           ...additionalCategory
         }) => ({
           ...additionalCategory,
-          id: additionalCategoryId,
+          id: additionalCategoryId || undefined,
           productAdditionals:
-            productAdditionals.map(({ additionalId, ...additional }) => ({
-              ...additional,
-              id: additionalId,
-            })) || [],
+            productAdditionals.map(
+              ({ additionalId, value, ...additional }) => ({
+                ...additional,
+                id: additionalId || undefined,
+                value: numberToNumberMoneyDb(value),
+              })
+            ) || [],
         })
       ) || [],
   });
@@ -207,13 +201,13 @@ const ProductCreateOrEdit = () => {
 
     if (productId) {
       await productService
-        .update(productId, mountBody(values))
+        .update(productId, mountBody(values, imageKey))
         .finally(() => setIsLoading(false));
 
       successMsg = "Produto editado";
     } else {
       await productService
-        .create(mountBody(values))
+        .create(mountBody(values, imageKey))
         .finally(() => setIsLoading(false));
 
       successMsg = "Produto criado";
@@ -240,6 +234,8 @@ const ProductCreateOrEdit = () => {
     reset(enterpriseForm);
   }, [enterpriseForm]);
 
+  useEffect(() => console.log("errors: ", errors), [errors]);
+
   return (
     <>
       <Heading as="h2" size="lg">
@@ -258,10 +254,10 @@ const ProductCreateOrEdit = () => {
       <Flex as="form" flexDir="column" onSubmit={onSubmit}>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
           <AppInput
-            aria-label="description"
-            label="Descrição"
-            {...register("description")}
-            errorMsg={errors.description?.message}
+            aria-label="name"
+            label="Nome"
+            {...register("name")}
+            errorMsg={errors.name?.message}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
           />
           <AppInput
@@ -269,6 +265,15 @@ const ProductCreateOrEdit = () => {
             label="Descrição em negrito"
             {...register("boldDescription")}
             errorMsg={errors.boldDescription?.message}
+            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+          />
+        </Flex>
+        <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
+          <AppInput
+            aria-label="description"
+            label="Descrição"
+            {...register("description")}
+            errorMsg={errors.description?.message}
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
           />
         </Flex>
@@ -292,7 +297,7 @@ const ProductCreateOrEdit = () => {
         </Flex>
         <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
           <AppCurrencyInput<IProductCreateOrEditForm>
-            label="Descrição"
+            label="Valor"
             control={control}
             name="value"
             style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
@@ -315,14 +320,8 @@ const ProductCreateOrEdit = () => {
                 limit: 0,
                 name: "",
                 type: ProductAdditionalType.ONE_SELECT,
-                productAdditionals:
-                  getValues().productAdditionalCategory[
-                    additionalCategoryFields.length - 1
-                  ].productAdditionals || [],
-                additionalCategoryId:
-                  getValues().productAdditionalCategory[
-                    additionalCategoryFields.length - 1
-                  ].additionalCategoryId,
+                productAdditionals: [],
+                additionalCategoryId: "",
               })
             }
             type="button"
@@ -341,22 +340,35 @@ const ProductCreateOrEdit = () => {
                 Remover
               </Button>
             </Flex>
-            <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-              <GridItem colSpan={[3, 1]}>
+            <Flex flexDir={["column", "row"]} marginBlock={4}>
+              <AppCheckbox<IProductCreateOrEditForm>
+                label="É opcional"
+                name={`productAdditionalCategory.${index}.isOptional`}
+                control={control}
+                style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+              />
+              <AppCheckbox<IProductCreateOrEditForm>
+                label="Desabilitar"
+                name={`productAdditionalCategory.${index}.isDisabled`}
+                control={control}
+                style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+              />
+            </Flex>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <GridItem colSpan={[2, 1]}>
                 <AppInput
-                  aria-labe={`productAdditionalCategory.${index}.name`}
+                  aria-label={`productAdditionalCategory.${index}.name`}
                   label="Nome"
                   {...register(`productAdditionalCategory.${index}.name`)}
                   errorMsg={
                     errors.productAdditionalCategory &&
                     errors.productAdditionalCategory[index]?.name?.message
                   }
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
               </GridItem>
-              <GridItem colSpan={[3, 1]}>
+              <GridItem colSpan={[2, 1]}>
                 <AppInput
-                  aria-labe={`productAdditionalCategory.${index}.description`}
+                  aria-label={`productAdditionalCategory.${index}.description`}
                   label="Descrição"
                   {...register(
                     `productAdditionalCategory.${index}.description`
@@ -366,12 +378,11 @@ const ProductCreateOrEdit = () => {
                     errors.productAdditionalCategory[index]?.description
                       ?.message
                   }
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
               </GridItem>
-              <GridItem colSpan={[3, 1]}>
+              <GridItem colSpan={[2, 1]}>
                 <AppInput
-                  aria-labe={`productAdditionalCategory.${index}.limit`}
+                  aria-label={`productAdditionalCategory.${index}.limit`}
                   label="Limite de seleção"
                   {...register(`productAdditionalCategory.${index}.limit`)}
                   type="number"
@@ -379,42 +390,26 @@ const ProductCreateOrEdit = () => {
                     errors.productAdditionalCategory &&
                     errors.productAdditionalCategory[index]?.limit?.message
                   }
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
               </GridItem>
-              <GridItem colSpan={[3, 1]}>
+              <GridItem colSpan={[2, 1]}>
                 <AppSelect<IProductCreateOrEditForm>
                   data={additionaCategoryTypeOptions}
                   label="Tipo"
                   name={`productAdditionalCategory.${index}.type`}
                   control={control}
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                />
-              </GridItem>
-              <GridItem colSpan={[3, 1]}>
-                <AppCheckbox<IProductCreateOrEditForm>
-                  label="É opcional"
-                  name={`productAdditionalCategory.${index}.isOptional`}
-                  control={control}
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
-                />
-              </GridItem>
-              <GridItem colSpan={[3, 1]}>
-                <AppCheckbox<IProductCreateOrEditForm>
-                  label="Desabilitar"
-                  name={`productAdditionalCategory.${index}.isDisabled`}
-                  control={control}
-                  style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
                 />
               </GridItem>
             </Grid>
-            <AdditionalFields<IProductCreateOrEditForm>
+            <AdditionalFields
               control={control}
-              name={`productAdditionalCategory.${index}.productAdditionals`}
+              additionalCategoryIndex={index}
               width="100%"
+              marginTop={[0, 4]}
               marginBottom={[0, 4]}
-              getValues={getValues}
               setValue={setValue}
+              register={register}
+              errors={errors}
             />
           </Card>
         ))}

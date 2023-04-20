@@ -6,38 +6,39 @@ import {
   Heading,
   StyleProps,
 } from "@chakra-ui/react";
-import { AppImageInput } from "@components/AppImageInput";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
-import { useState } from "react";
+import { IProductCreateOrEditForm } from "@models/forms/IProductCreateOrEditForm";
 import {
-  ArrayPath,
   useFieldArray,
-  FieldValues,
   Control,
+  UseFormRegister,
+  FieldErrors,
+  UseFormSetValue,
 } from "react-hook-form";
+import { AdditionalFieldImage } from "./AdditionalFieldImage";
+import { AppCurrencyInput } from "@components/AppCurrencyInput";
+import { AppCheckbox } from "@components/AppCheckbox";
+import { AppInput } from "@components/AppInput";
 
-interface IAditionalFieldsProps<IForm extends FieldValues> extends StyleProps {
-  control: Control<IForm, string>;
-  name: ArrayPath<IForm>;
-  getValues: any;
-  setValue: any;
+interface IAditionalFieldsProps extends StyleProps {
+  control: Control<IProductCreateOrEditForm>;
+  additionalCategoryIndex: number;
+  setValue: UseFormSetValue<IProductCreateOrEditForm>;
+  register: UseFormRegister<IProductCreateOrEditForm>;
+  errors: FieldErrors<IProductCreateOrEditForm>;
 }
 
-export function AdditionalFields<IForm extends FieldValues>({
+export function AdditionalFields({
   control,
-  name,
-  getValues,
+  additionalCategoryIndex,
+  errors,
   setValue,
+  register,
   ...style
-}: IAditionalFieldsProps<IForm>) {
+}: IAditionalFieldsProps) {
   const { append, fields, remove } = useFieldArray({
     control,
-    name,
+    name: `productAdditionalCategory.${additionalCategoryIndex}.productAdditionals`,
   });
-
-  const [image] = useState();
-
-  const {} = useGetImageRequest();
 
   return (
     <Flex flexDir="column" {...style}>
@@ -46,18 +47,17 @@ export function AdditionalFields<IForm extends FieldValues>({
         justify="space-between"
         marginBottom={4}
       >
-        <Heading as="h4" size="md" marginBottom={4}>
+        <Heading as="h4" size="md" marginTop={[4, 0]} marginBottom={4}>
           Adicionais
         </Heading>
         <Button
           onClick={() =>
             append({
-                // @ts-ignore
-              additionalId: getValues(`${name}.additionalId`),
-              imageKey: getValues(`${name}.imageKey`),
-              name: getValues(`${name}.name`),
-              value: getValues(`${name}.value`),
-              isDisabled: getValues(`${name}.isDisabled`),
+              additionalId: "",
+              imageKey: "",
+              name: "",
+              value: 0,
+              isDisabled: false,
             })
           }
           type="button"
@@ -65,10 +65,41 @@ export function AdditionalFields<IForm extends FieldValues>({
           Adicionar novo
         </Button>
       </Flex>
-      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-        <GridItem colSpan={[3, 1]}>
-            <AppImageInput onImageChange={(file) => } />
-        </GridItem>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        {fields.map(({ id, imageKey, ...additional }, index) => (
+          <>
+            <GridItem colSpan={2}>
+              <AdditionalFieldImage
+                setValue={setValue}
+                value={imageKey}
+                name={`productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.imageKey`}
+              />
+            </GridItem>
+            <GridItem colSpan={2}>
+              <AppCheckbox<IProductCreateOrEditForm>
+                label="Desabilitar"
+                control={control}
+                name={`productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.isDisabled`}
+              />
+            </GridItem>
+            <GridItem colSpan={[2, 1]}>
+              <AppInput
+                label="Nome"
+                aria-label={`productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.name`}
+                {...register(
+                  `productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.name`
+                )}
+              />
+            </GridItem>
+            <GridItem colSpan={[2, 1]}>
+              <AppCurrencyInput<IProductCreateOrEditForm>
+                label="Valor"
+                control={control}
+                name={`productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.value`}
+              />
+            </GridItem>
+          </>
+        ))}
       </Grid>
     </Flex>
   );
