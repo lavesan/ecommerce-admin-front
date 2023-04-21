@@ -18,10 +18,7 @@ export const useSaveImage = (): IUseSaveImageReturn => {
   return {
     async saveImage({ oldImageKey, file, preffix }): Promise<string> {
       if (oldImageKey) {
-        await imageService.deleteByKey(oldImageKey).catch(() => {
-          setIsLoading(false);
-          throw new Error();
-        });
+        await imageService.deleteByKey(oldImageKey).catch(() => {});
       }
 
       const { key } = await imageService

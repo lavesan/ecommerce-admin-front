@@ -69,6 +69,17 @@ export function AdditionalFields({
         {fields.map(({ id, imageKey, ...additional }, index) => (
           <>
             <GridItem colSpan={2}>
+              <Flex justify="flex-end">
+                <Button
+                  colorScheme="red"
+                  onClick={() => remove(index)}
+                  type="button"
+                >
+                  Remover
+                </Button>
+              </Flex>
+            </GridItem>
+            <GridItem colSpan={2}>
               <AdditionalFieldImage
                 setValue={setValue}
                 value={imageKey}

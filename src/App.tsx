@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider, Spinner, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Spinner, Flex, StyleProps } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClientProvider } from "react-query";
 
@@ -19,7 +19,7 @@ function App() {
     () => (isLoading ? { opacity: 0.7 } : {}),
     [isLoading]
   );
-  const loadingStyle = useMemo(
+  const loadingStyle = useMemo<StyleProps>(
     () =>
       isLoading
         ? {
@@ -29,6 +29,7 @@ function App() {
             alignItems: "center",
             width: "100vw",
             height: "100vh",
+            pointerEvents: "none",
           }
         : { zIndex: -1 },
     [isLoading]

@@ -190,12 +190,17 @@ const ProductCreateOrEdit = () => {
     }
 
     if (imageChanged && image) {
+      console.log("imageKey 1: ", imageKey);
+      console.log("file: ", image);
+
       imageKey = await saveImage({
         oldImageKey: imageKey,
         preffix: "product",
         file: image,
       });
     }
+
+    console.log("imageKey 2: ", imageKey);
 
     let successMsg = "";
 

@@ -26,12 +26,6 @@ export const AppImageInput = ({
 
   const hasImage = useMemo(() => imageSrc || updated, [imageSrc, updated]);
 
-  useEffect(() => {
-    if (imageSrc && previewCanvasRef.current) {
-      canvasBlobPreview(imageSrc, previewCanvasRef.current);
-    }
-  }, [imageSrc]);
-
   const onModalClose = (update?: boolean) => {
     if (update) setUpdated(true);
     if (update && imageRef.current && previewCanvasRef.current)
@@ -70,6 +64,12 @@ export const AppImageInput = ({
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+
+  useEffect(() => {
+    if (imageSrc && previewCanvasRef.current) {
+      canvasBlobPreview(imageSrc, previewCanvasRef.current);
+    }
+  }, [imageSrc]);
 
   return (
     <>
