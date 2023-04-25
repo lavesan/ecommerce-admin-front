@@ -3,7 +3,7 @@ import { PixelCrop } from "react-image-crop";
 const TO_RADIANS = Math.PI / 180;
 
 export async function canvasBlobPreview(
-  image: Blob,
+  src: string,
   canvas: HTMLCanvasElement
 ) {
   const ctx = canvas.getContext("2d");
@@ -16,7 +16,7 @@ export async function canvasBlobPreview(
       ctx.drawImage(img, 0, 0, img.width, img.height);
     };
 
-    img.src = URL.createObjectURL(image);
+    img.src = src;
   }
 }
 

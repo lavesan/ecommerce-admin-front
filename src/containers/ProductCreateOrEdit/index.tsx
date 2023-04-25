@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Card, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 
@@ -18,39 +10,20 @@ import { AppSelect } from "@components/AppSelect";
 import { AppInput } from "@components/AppInput";
 import { useAppContext } from "@hooks/useAppContext";
 import { useAppToast } from "@hooks/useSuccessToast";
-import {
-  additionaCategoryTypeOptions,
-  citiesOptions,
-  districtOptions,
-  scheduleRelationOptions,
-  weekDayOptions,
-} from "@helpers/select.helper";
+import { additionaCategoryTypeOptions } from "@helpers/select.helper";
 import { IProductCreateOrEditForm } from "@models/forms/IProductCreateOrEditForm";
-import { IEnterprise } from "@models/entities/IEnterprise";
-import { useUser } from "@hooks/useUser";
-import { AppMaskInput } from "@components/AppMaskInput";
-import {
-  cnpjMask,
-  onlyNumberMask,
-  phoneMask,
-  timeMask,
-  unmask,
-} from "@helpers/mask.helper";
 import { AppCurrencyInput } from "@components/AppCurrencyInput";
 import {
   dbNumberMoneyToNumber,
   numberToNumberMoneyDb,
 } from "@helpers/format.helper";
-import { WeekDay } from "@enums/WeekDay.enum";
-import { ScheduleRelation } from "@enums/ScheduleRelation";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
-import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { ProductService } from "@services/product.service";
 import { IProduct } from "@models/entities/IProduct";
 import { ProductAdditionalType } from "@enums/ProductAdditionalType.enum";
 import { AdditionalFields } from "./AdditionalFields";
+import { getImgUrl } from "@helpers/image.helper";
 
 const ProductCreateOrEdit = () => {
   const productService = ProductService.getInstance();
@@ -62,7 +35,6 @@ const ProductCreateOrEdit = () => {
 
   const [imageKey, setImageKey] = useState("");
 
-  const { data: savedImage } = useGetImageRequest(imageKey);
   const { saveImage } = useSaveImage();
 
   const [product, setProduct] = useState<IProduct>({} as IProduct);
@@ -190,17 +162,12 @@ const ProductCreateOrEdit = () => {
     }
 
     if (imageChanged && image) {
-      console.log("imageKey 1: ", imageKey);
-      console.log("file: ", image);
-
       imageKey = await saveImage({
         oldImageKey: imageKey,
         preffix: "product",
         file: image,
       });
     }
-
-    console.log("imageKey 2: ", imageKey);
 
     let successMsg = "";
 
@@ -245,7 +212,10 @@ const ProductCreateOrEdit = () => {
         {productId ? "Editar" : "Criar"} produto
       </Heading>
       <Flex width={["100%", "300px"]} marginBlock={4}>
-        <AppImageInput imageSrc={savedImage} onImageChange={onImageChange} />
+        <AppImageInput
+          imageSrc={getImgUrl(imageKey)}
+          onImageChange={onImageChange}
+        />
       </Flex>
       <Flex marginBottom={8} marginTop={4}>
         <AppCheckbox<IProductCreateOrEditForm>

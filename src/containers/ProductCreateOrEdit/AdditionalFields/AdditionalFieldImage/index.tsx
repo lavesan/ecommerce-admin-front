@@ -1,9 +1,9 @@
 import { AppImageInput } from "@components/AppImageInput";
+import { getImgUrl } from "@helpers/image.helper";
 import { useAppContext } from "@hooks/useAppContext";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { IProductCreateOrEditForm } from "@models/forms/IProductCreateOrEditForm";
-import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
+import { Path, UseFormSetValue } from "react-hook-form";
 
 interface IAdditionalFieldImageProps {
   name: Path<IProductCreateOrEditForm>;
@@ -18,7 +18,6 @@ export function AdditionalFieldImage({
 }: IAdditionalFieldImageProps) {
   const { setIsLoading } = useAppContext();
 
-  const { data } = useGetImageRequest(value);
   const { saveImage } = useSaveImage();
 
   const onImageChange = async (file: File) => {
@@ -30,5 +29,7 @@ export function AdditionalFieldImage({
     setValue(name, newImageKey);
   };
 
-  return <AppImageInput onImageChange={onImageChange} imageSrc={data} />;
+  return (
+    <AppImageInput onImageChange={onImageChange} imageSrc={getImgUrl(value)} />
+  );
 }

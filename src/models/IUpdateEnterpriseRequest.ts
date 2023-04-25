@@ -16,6 +16,7 @@ export interface IUpdateEnterpriseRequest {
   state: string;
   city: string;
   imageKey: string;
+  bannerKey: string;
   userId: string;
   freights?: {
     id?: string | undefined;

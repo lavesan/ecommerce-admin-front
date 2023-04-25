@@ -9,12 +9,12 @@ import { AppImageInput } from "@components/AppImageInput";
 import { AppInput } from "@components/AppInput";
 import { useAppContext } from "@hooks/useAppContext";
 import { useAppToast } from "@hooks/useSuccessToast";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { ICategoryCreateOrEditForm } from "@models/forms/ICategoryCreateOrEditForm";
 import { ICategory } from "@models/entities/ICategory";
 import { CategoryService } from "@services/category.service";
+import { getImgUrl } from "@helpers/image.helper";
 
 const CategoryCreateOrEdit = () => {
   const categoryService = CategoryService.getInstance();
@@ -26,18 +26,17 @@ const CategoryCreateOrEdit = () => {
 
   const [imageKey, setImageKey] = useState("");
 
-  const { data: savedImage } = useGetImageRequest(imageKey);
   const { saveImage } = useSaveImage();
 
   const [category, setCategory] = useState<ICategory>({} as ICategory);
 
-  const enterpriseForm = useMemo<ICategoryCreateOrEditForm>(() => {
+  const categoryForm = useMemo<ICategoryCreateOrEditForm>(() => {
     const { name, description, isDisabled } = category;
 
     return {
       name,
       description,
-      isDisabled,
+      isDisabled: isDisabled ? isDisabled : false,
     };
   }, [category]);
 
@@ -53,7 +52,7 @@ const CategoryCreateOrEdit = () => {
   } = useForm<ICategoryCreateOrEditForm>({
     mode: "all",
     resolver: yupResolver(validationSchema),
-    defaultValues: enterpriseForm,
+    defaultValues: categoryForm,
   });
 
   const onImageChange = (file: File) => {
@@ -119,8 +118,8 @@ const CategoryCreateOrEdit = () => {
   }, [onInit]);
 
   useEffect(() => {
-    reset(enterpriseForm);
-  }, [enterpriseForm]);
+    reset(categoryForm);
+  }, [categoryForm]);
 
   return (
     <>
@@ -128,7 +127,10 @@ const CategoryCreateOrEdit = () => {
         {categoryId ? "Editar" : "Criar"} categoria
       </Heading>
       <Flex width={["100%", "300px"]} marginBlock={4}>
-        <AppImageInput imageSrc={savedImage} onImageChange={onImageChange} />
+        <AppImageInput
+          imageSrc={getImgUrl(imageKey)}
+          onImageChange={onImageChange}
+        />
       </Flex>
       <Flex marginBottom={8} marginTop={4}>
         <AppCheckbox<ICategoryCreateOrEditForm>

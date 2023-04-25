@@ -5,11 +5,13 @@ import { HiUpload } from "react-icons/hi";
 import { CropImage } from "./CropImage";
 
 interface IAppImageInputProps {
-  imageSrc?: Blob;
+  aspect?: number;
+  imageSrc?: string;
   onImageChange: (image: File) => void;
 }
 
 export const AppImageInput = ({
+  aspect = 1,
   imageSrc,
   onImageChange,
 }: IAppImageInputProps) => {
@@ -109,10 +111,11 @@ export const AppImageInput = ({
         )}
       </Flex>
       <CropImage
+        src={src}
+        aspect={aspect}
         ref={imageRef}
         isOpen={openModal}
         onClose={onModalClose}
-        src={src}
         setCompletedCrop={setCompletedCrop}
       />
     </>

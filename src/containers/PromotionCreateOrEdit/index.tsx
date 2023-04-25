@@ -1,7 +1,6 @@
 import { dbNumberMoneyToNumber } from "@helpers/format.helper";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppContext } from "@hooks/useAppContext";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { useAppToast } from "@hooks/useSuccessToast";
 import { IPromotion } from "@models/entities/IPromotion";
@@ -20,6 +19,7 @@ import { weekDayOptions } from "@helpers/select.helper";
 import { useProductOptions } from "@hooks/useProductOptions";
 import { AppCurrencyInput } from "@components/AppCurrencyInput";
 import { numberToNumberMoneyDb } from "@helpers/format.helper";
+import { getImgUrl } from "@helpers/image.helper";
 
 const PromotionCreateOrEdit = () => {
   const promotionService = PromotionService.getInstance();
@@ -33,7 +33,6 @@ const PromotionCreateOrEdit = () => {
 
   const [imageKey, setImageKey] = useState("");
 
-  const { data: savedImage } = useGetImageRequest(imageKey);
   const { saveImage } = useSaveImage();
 
   const [promotion, setPromotion] = useState<IPromotion>({} as IPromotion);
@@ -155,7 +154,10 @@ const PromotionCreateOrEdit = () => {
         {promotionId ? "Editar" : "Criar"} promoção
       </Heading>
       <Flex width={["100%", "300px"]} marginBlock={4}>
-        <AppImageInput imageSrc={savedImage} onImageChange={onImageChange} />
+        <AppImageInput
+          imageSrc={getImgUrl(imageKey)}
+          onImageChange={onImageChange}
+        />
       </Flex>
       <Flex marginBottom={8} marginTop={4}>
         <AppCheckbox<IPromotionCreateOrEditForm>

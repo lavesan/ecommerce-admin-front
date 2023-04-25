@@ -29,17 +29,12 @@ export function AppMaskInput<IForm extends FieldValues>({
 }: IInputMaskProps<IForm>) {
   const {
     field: { onChange: onControlChange, value },
-    formState: { errors },
   } = useController({
     name,
     control,
   });
 
   const [aliasErrorMsg, setAliasErrorMsg] = useState("");
-
-  useEffect(() => {
-    console.log("errors: ", errors);
-  }, [errors]);
 
   // const errorMsg = useMemo<string>(
   //   () => errors[name]?.message?.toString() || "",

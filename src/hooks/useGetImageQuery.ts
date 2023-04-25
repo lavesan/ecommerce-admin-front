@@ -3,7 +3,7 @@ import { useAppContext } from "./useAppContext";
 import { useEffect, useState } from "react";
 import { ImageService } from "@services/image.service";
 
-export const useGetImageRequest = (fileKey: string) => {
+export const useGetImageQuery = (fileKey: string) => {
   const imageService = ImageService.getInstance();
 
   const { setIsLoading } = useAppContext();

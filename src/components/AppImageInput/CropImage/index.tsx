@@ -15,17 +15,19 @@ import {
 
 import "react-image-crop/dist/ReactCrop.css";
 
-const ASPECT = 1;
-
 interface ICropImageProps {
+  src: any;
+  aspect: number;
   isOpen: boolean;
   onClose: (updateImg?: boolean) => void;
   setCompletedCrop: any;
-  src: any;
 }
 
 export const CropImage = forwardRef<HTMLImageElement, ICropImageProps>(
-  ({ isOpen, onClose, setCompletedCrop, src }: ICropImageProps, ref) => {
+  (
+    { isOpen, onClose, setCompletedCrop, src, aspect }: ICropImageProps,
+    ref
+  ) => {
     const [crop, setCrop] = useState<Crop>();
     const [cropped, setCroppped] = useState(false);
 
@@ -48,7 +50,7 @@ export const CropImage = forwardRef<HTMLImageElement, ICropImageProps>(
                   setCrop(percentCrop);
                   setCroppped(true);
                 }}
-                aspect={ASPECT}
+                aspect={aspect}
                 onComplete={(c) => setCompletedCrop(c)}
               >
                 <Image ref={ref} src={src} alt="Crop me" width="100%" />

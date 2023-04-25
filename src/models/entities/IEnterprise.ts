@@ -22,6 +22,7 @@ export interface IEnterprise {
   state: string;
   city: string;
   imageKey: string;
+  bannerKey: string;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

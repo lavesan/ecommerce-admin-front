@@ -27,10 +27,10 @@ import {
   numberToNumberMoneyDb,
 } from "@helpers/format.helper";
 import { WeekDay } from "@enums/WeekDay.enum";
-import { useGetImageRequest } from "@hooks/useGetImageRequest";
 import { extractTimeFromDate, timeStringToDate } from "@helpers/date.helper";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { useSaveImage } from "@hooks/useSaveImage";
+import { getImgUrl } from "@helpers/image.helper";
 
 const EnterpriseCreateOrEdit = () => {
   const enterpriseService = EnterpriseService.getInstance();
@@ -42,9 +42,14 @@ const EnterpriseCreateOrEdit = () => {
   const { showToast } = useAppToast();
 
   const [imageKey, setImageKey] = useState("");
+  const [bannerKey, setBannerKey] = useState("");
 
-  const { data: savedImage } = useGetImageRequest(imageKey);
   const { saveImage } = useSaveImage();
+
+  const [image, setImage] = useState<File>();
+  const [imageChanged, setImageChanged] = useState(false);
+  const [bannerImage, setBannerImage] = useState<File>();
+  const [bannerImageChanged, setBannerImageChanged] = useState(false);
 
   const [enterprise, setEnterprise] = useState<IEnterprise>({} as IEnterprise);
 
@@ -100,9 +105,6 @@ const EnterpriseCreateOrEdit = () => {
     };
   }, [enterprise]);
 
-  const [image, setImage] = useState<File>();
-  const [imageChanged, setImageChanged] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -138,12 +140,19 @@ const EnterpriseCreateOrEdit = () => {
     setImage(file);
   };
 
+  const onBannerImageChange = (file: File) => {
+    setBannerImageChanged(true);
+    setBannerImage(file);
+  };
+
   const mountBody = (
     { freights, schedules, phone, cnpj, ...body }: IEnterpriseCreateOrEditForm,
-    imageKey: string
+    imageKey: string,
+    bannerKey: string
   ) => ({
     ...body,
     imageKey,
+    bannerKey,
     userId,
     state: "PE",
     phone: unmask(phone),
@@ -165,16 +174,35 @@ const EnterpriseCreateOrEdit = () => {
 
   const onSubmit = handleSubmit(async (values) => {
     let imageKey = enterprise.imageKey;
+    let bannerKey = enterprise.bannerKey;
 
     if ((imageChanged && !image) || (!imageKey && !id && !image)) {
-      return showToast({ title: "Faça o upload da imagem", status: "error" });
+      return showToast({ title: "Faça o upload da logo", status: "error" });
+    }
+
+    if (
+      (bannerImageChanged && !bannerImage) ||
+      (!bannerKey && !id && !bannerImage)
+    ) {
+      return showToast({
+        title: "Faça o upload da imagem de banner",
+        status: "error",
+      });
     }
 
     if (imageChanged && image) {
       imageKey = await saveImage({
         oldImageKey: imageKey,
-        preffix: "enterprise",
+        preffix: "enterprise_logo",
         file: image,
+      });
+    }
+
+    if (bannerImageChanged && bannerImage) {
+      bannerKey = await saveImage({
+        oldImageKey: bannerKey,
+        preffix: "enterprise_banner",
+        file: bannerImage,
       });
     }
 
@@ -182,13 +210,13 @@ const EnterpriseCreateOrEdit = () => {
 
     if (id) {
       await enterpriseService
-        .update(id, mountBody(values, imageKey))
+        .update(id, mountBody(values, imageKey, bannerKey))
         .finally(() => setIsLoading(false));
 
       successMsg = "Empresa editada";
     } else {
       await enterpriseService
-        .create(mountBody(values, imageKey))
+        .create(mountBody(values, imageKey, bannerKey))
         .finally(() => setIsLoading(false));
 
       successMsg = "Empresa criada";
@@ -204,6 +232,7 @@ const EnterpriseCreateOrEdit = () => {
 
       setEnterprise(res);
       setImageKey(res.imageKey);
+      setBannerKey(res.bannerKey);
     }
   }, []);
 
@@ -220,8 +249,24 @@ const EnterpriseCreateOrEdit = () => {
       <Heading as="h2" size="lg">
         {id ? "Editar" : "Criar"} empresa
       </Heading>
+      <Heading as="h2" size="md">
+        Logo
+      </Heading>
       <Flex width={["100%", "300px"]} marginBlock={4}>
-        <AppImageInput imageSrc={savedImage} onImageChange={onImageChange} />
+        <AppImageInput
+          imageSrc={getImgUrl(imageKey)}
+          onImageChange={onImageChange}
+        />
+      </Flex>
+      <Heading as="h2" size="md">
+        Banner
+      </Heading>
+      <Flex width={["100%", "300px"]} marginBlock={4}>
+        <AppImageInput
+          aspect={16 / 6}
+          imageSrc={getImgUrl(bannerKey)}
+          onImageChange={onBannerImageChange}
+        />
       </Flex>
       <Flex marginBottom={8} marginTop={4}>
         <AppCheckbox<IEnterpriseCreateOrEditForm>
