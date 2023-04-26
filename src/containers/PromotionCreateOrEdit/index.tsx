@@ -155,6 +155,7 @@ const PromotionCreateOrEdit = () => {
       </Heading>
       <Flex width={["100%", "300px"]} marginBlock={4}>
         <AppImageInput
+          aspect={16 / 9}
           imageSrc={getImgUrl(imageKey)}
           onImageChange={onImageChange}
         />
