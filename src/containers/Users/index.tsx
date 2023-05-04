@@ -118,7 +118,7 @@ const Users = () => {
   return (
     <>
       <Heading marginBottom={8} size="lg">
-        Listagem de empresas
+        Listagem de usuários
       </Heading>
       <Flex
         flexDir={["column-reverse", "row"]}
