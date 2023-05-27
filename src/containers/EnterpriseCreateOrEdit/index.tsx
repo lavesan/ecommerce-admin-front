@@ -18,7 +18,6 @@ import {
 } from "@helpers/select.helper";
 import { IEnterpriseCreateOrEditForm } from "@models/forms/IEnterpriseCreateOrEditForm";
 import { IEnterprise } from "@models/entities/IEnterprise";
-import { useUser } from "@hooks/useUser";
 import { AppMaskInput } from "@components/AppMaskInput";
 import { cnpjMask, phoneMask, timeMask, unmask } from "@helpers/mask.helper";
 import { AppCurrencyInput } from "@components/AppCurrencyInput";
@@ -38,7 +37,6 @@ const EnterpriseCreateOrEdit = () => {
   const { id } = useParams();
 
   const { setIsLoading } = useAppContext();
-  const { id: userId } = useUser();
   const { showToast } = useAppToast();
 
   const [imageKey, setImageKey] = useState("");
@@ -153,7 +151,6 @@ const EnterpriseCreateOrEdit = () => {
     ...body,
     imageKey,
     bannerKey,
-    userId,
     state: "PE",
     phone: unmask(phone),
     cnpj: unmask(cnpj),

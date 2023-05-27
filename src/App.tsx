@@ -6,19 +6,22 @@ import { QueryClientProvider } from "react-query";
 
 import { queryClient } from "@config/query-client.config";
 import { AppContext } from "@context/AppContext";
-import { useTokenCookies } from "@hooks/useTokenCookies";
 import { AxiosInterceptorHOC } from "@config/axios.config";
 import { theme } from "./theme";
 import Router from "routes";
+import { AuthContext } from "@context/AuthContext";
+import { useAuthContextConfig } from "@hooks/useAuthContextConfig";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const { removeToken } = useTokenCookies();
+
+  const authContextConfig = useAuthContextConfig();
 
   const appStyle = useMemo(
     () => (isLoading ? { opacity: 0.7 } : {}),
     [isLoading]
   );
+
   const loadingStyle = useMemo<StyleProps>(
     () =>
       isLoading
@@ -35,32 +38,30 @@ function App() {
     [isLoading]
   );
 
-  const logout = async () => {
-    removeToken();
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppContext.Provider value={{ logout, setIsLoading }}>
-          <ChakraProvider theme={theme}>
-            <AxiosInterceptorHOC>
-              <Flex
-                position="relative"
-                width="100%"
-                height="100%"
-                minHeight="100vh"
-                {...appStyle}
-              >
-                {isLoading && (
-                  <Flex {...loadingStyle} position="absolute">
-                    <Spinner size="xl" />
-                  </Flex>
-                )}
-                <Router />
-              </Flex>
-            </AxiosInterceptorHOC>
-          </ChakraProvider>
+        <AppContext.Provider value={{ setIsLoading }}>
+          <AuthContext.Provider value={authContextConfig}>
+            <ChakraProvider theme={theme}>
+              <AxiosInterceptorHOC>
+                <Flex
+                  position="relative"
+                  width="100%"
+                  height="100%"
+                  minHeight="100vh"
+                  {...appStyle}
+                >
+                  {isLoading && (
+                    <Flex {...loadingStyle} position="absolute">
+                      <Spinner size="xl" />
+                    </Flex>
+                  )}
+                  <Router />
+                </Flex>
+              </AxiosInterceptorHOC>
+            </ChakraProvider>
+          </AuthContext.Provider>
         </AppContext.Provider>
       </BrowserRouter>
       <ReactQueryDevtools />

@@ -25,7 +25,7 @@ import {
   HiServerRef,
   HiShoppingCartRef,
 } from "@components/RefIcons";
-import { useUser } from "@hooks/useUser";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 const Enterprises = () => {
   const enterpriseService = EnterpriseService.getInstance();
@@ -36,7 +36,7 @@ const Enterprises = () => {
 
   const { setIsLoading } = useAppContext();
 
-  const { isAdmin } = useUser();
+  const { isAdmin } = useAuthContext();
 
   const [data, setData] =
     useState<IPaginationResponse<IFormatPaginateEnterprise>>();

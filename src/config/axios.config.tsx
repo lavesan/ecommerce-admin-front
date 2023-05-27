@@ -1,6 +1,6 @@
 import { AppContext } from "@context/AppContext";
+import { getToken } from "@helpers/token.helper";
 import { useAppToast } from "@hooks/useSuccessToast";
-import { useTokenCookies } from "@hooks/useTokenCookies";
 import axios, {
   AxiosError,
   AxiosResponse,
@@ -29,11 +29,12 @@ export const AxiosInterceptorHOC = ({
 }: IAxiosInterceptorHOCProps) => {
   const { setIsLoading } = useContext(AppContext);
   const { showToast } = useAppToast();
-  const { token } = useTokenCookies();
 
   useEffect(() => {
     const successReqInterceptor = (config: InternalAxiosRequestConfig) => {
       setIsLoading(true);
+
+      const token = getToken();
 
       const headers = config.headers || {};
       headers.Authorization = `Bearer ${token}`;

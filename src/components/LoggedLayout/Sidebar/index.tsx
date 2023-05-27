@@ -4,15 +4,14 @@ import { AiOutlinePoweroff } from "react-icons/ai";
 import { useAppContext } from "@hooks/useAppContext";
 import { forwardRef } from "react";
 import { Links } from "../Links";
-import { useUser } from "@hooks/useUser";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 const AiOutlinePoweroffRef = forwardRef((props, ref) => (
   <AiOutlinePoweroff {...props} />
 ));
 
 export const Sidebar = () => {
-  const { logout } = useAppContext();
-  const { name } = useUser();
+  const { logout, user } = useAuthContext();
 
   return (
     <Flex
@@ -27,7 +26,7 @@ export const Sidebar = () => {
       backgroundColor="green.500"
     >
       <Heading as="h2" size="xs" color="white" marginBottom={4}>
-        Olá, {name}
+        Olá, {user?.name}
       </Heading>
       <Links />
       <IconButton

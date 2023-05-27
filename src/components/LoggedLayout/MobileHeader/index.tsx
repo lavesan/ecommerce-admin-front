@@ -1,20 +1,11 @@
 import { Flex, IconButton } from "@chakra-ui/react";
-import { useAppContext } from "@hooks/useAppContext";
-import { forwardRef, useState } from "react";
-import { AiOutlinePoweroff } from "react-icons/ai";
-import { HiOutlineMenu } from "react-icons/hi";
+import { useState } from "react";
 import { MobileMenu } from "./MobileMenu";
-
-const AiOutlinePoweroffRef = forwardRef((props, ref) => (
-  <AiOutlinePoweroff {...props} />
-));
-
-const HiOutlineMenuRef = forwardRef((props, ref) => (
-  <HiOutlineMenu {...props} />
-));
+import { useAuthContext } from "@hooks/useAuthContext";
+import { AiOutlinePoweroffRef, HiOutlineMenuRef } from "@components/RefIcons";
 
 export const MobileHeader = () => {
-  const { logout } = useAppContext();
+  const { logout } = useAuthContext();
   const [openMenu, setOpenMenu] = useState(false);
 
   return (

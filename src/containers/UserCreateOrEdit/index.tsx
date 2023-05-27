@@ -11,6 +11,8 @@ import { validationSchema } from "./validations";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { AppInput } from "@components/AppInput";
+import { AppSelect } from "@components/AppSelect";
+import { useEnterpriseOptions } from "@hooks/useEnterpriseOptions";
 
 const UserCreateOrEdit = () => {
   const userService = UserService.getInstance();
@@ -20,15 +22,18 @@ const UserCreateOrEdit = () => {
   const { setIsLoading } = useAppContext();
   const { showToast } = useAppToast();
 
+  const { enterpriseOptions } = useEnterpriseOptions();
+
   const [user, setUser] = useState<IUser>({} as IUser);
 
   const enterpriseForm = useMemo<IUserCreateOrEditForm>(() => {
-    const { name, email, isAdmin } = user;
+    const { name, email, isAdmin, enterprises } = user;
 
     return {
       name,
       email,
       isAdmin: isAdmin ? isAdmin : false,
+      enterpriseId: enterprises?.length ? enterprises[0].id : "",
       password: "",
     };
   }, [user]);
@@ -97,13 +102,18 @@ const UserCreateOrEdit = () => {
         />
       </Flex>
       <Flex as="form" flexDir="column" onSubmit={onSubmit}>
-        <Flex flexDir={["column", "row"]} width="100%" marginBottom={[0, 4]}>
+        <Flex
+          flexDir={["column", "row"]}
+          width="100%"
+          gap={2}
+          marginBottom={[0, 4]}
+        >
           <AppInput
             aria-label="name"
             label="Nome"
             {...register("name")}
             errorMsg={errors.name?.message}
-            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+            style={{ marginBottom: [4, 0] }}
           />
           <AppInput
             aria-label="email"
@@ -111,9 +121,16 @@ const UserCreateOrEdit = () => {
             {...register("email")}
             type="email"
             errorMsg={errors.email?.message}
-            style={{ marginBottom: [4, 0], marginRight: [0, 4] }}
+            style={{ marginBottom: [4, 0] }}
           />
         </Flex>
+        <AppSelect<IUserCreateOrEditForm>
+          data={enterpriseOptions}
+          label="Empresa vinculada"
+          name="enterpriseId"
+          control={control}
+          style={{ marginBottom: 4 }}
+        />
         <AppInput
           aria-label="password"
           label="Nova senha"

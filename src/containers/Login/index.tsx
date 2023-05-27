@@ -1,19 +1,22 @@
 import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card, Button, Heading } from "@chakra-ui/react";
 
 import { IUserLoginRequest } from "@models/IUserLoginRequest";
 import { UserService } from "@services/user.service";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useTokenCookies } from "@hooks/useTokenCookies";
 
 import { validationSchema } from "./validations";
 import { AppInput } from "@components/AppInput";
-import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@hooks/useAppContext";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 const Login = () => {
   const userService = UserService.getInstance();
-  const { setToken } = useTokenCookies();
+
+  const [searchParams] = useSearchParams();
+
+  const { setToken } = useAuthContext();
   const { setIsLoading } = useAppContext();
   const navigate = useNavigate();
 
@@ -31,8 +34,10 @@ const Login = () => {
       .login(form)
       .finally(() => setIsLoading(false));
 
+    const callbackURL = searchParams.get("callbackURL");
+
     setToken(res.accessToken);
-    navigate("/");
+    navigate(callbackURL ? callbackURL : "/empresas");
   });
 
   return (

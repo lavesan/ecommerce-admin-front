@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Flex,
@@ -67,7 +68,7 @@ export function AdditionalFields({
       </Flex>
       <Grid templateColumns="repeat(2, 1fr)" gap={4}>
         {fields.map(({ id, imageKey, ...additional }, index) => (
-          <>
+          <React.Fragment key={`additional_${id}`}>
             <GridItem colSpan={2}>
               <Flex justify="flex-end">
                 <Button
@@ -109,7 +110,7 @@ export function AdditionalFields({
                 name={`productAdditionalCategory.${additionalCategoryIndex}.productAdditionals.${index}.value`}
               />
             </GridItem>
-          </>
+          </React.Fragment>
         ))}
       </Grid>
     </Flex>

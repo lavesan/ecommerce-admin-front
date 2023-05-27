@@ -17,7 +17,6 @@ export interface ICreateEnterpriseRequest {
   city: string;
   imageKey: string;
   bannerKey: string;
-  userId: string;
   freights: {
     addressKey: string;
     addressValue: string;

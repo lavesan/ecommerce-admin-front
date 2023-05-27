@@ -23,6 +23,11 @@ export class EnterpriseService {
     return res.data;
   }
 
+  async findAll(): Promise<IEnterprise[]> {
+    const res = await server.get<IEnterprise[]>(`/enterprise/all`);
+    return res.data;
+  }
+
   async findById(id: string): Promise<IEnterprise> {
     const res = await server.get<IEnterprise>(`/enterprise/${id}`);
     return res.data;

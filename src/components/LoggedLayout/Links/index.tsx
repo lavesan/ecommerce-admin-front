@@ -11,7 +11,7 @@ import {
 
 import { SidebarLink } from "../Sidebar/SidebarLink";
 import { useLocation } from "react-router-dom";
-import { useUser } from "@hooks/useUser";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 interface ILinksProps {
   onLinkClick?: VoidFunction;
@@ -20,18 +20,10 @@ interface ILinksProps {
 export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
   const { pathname } = useLocation();
 
-  const { isAdmin } = useUser();
+  const { isAdmin } = useAuthContext();
 
   return (
     <>
-      {/* <SidebarLink
-        icon={HiPresentationChartLine}
-        to="/"
-        label="Dashboard"
-        isActive={pathname === "/"}
-        marginBottom={1}
-        onClick={onLinkClick}
-      /> */}
       {isAdmin && (
         <SidebarLink
           icon={HiUserGroup}

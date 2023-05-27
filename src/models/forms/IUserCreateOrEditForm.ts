@@ -3,4 +3,5 @@ export interface IUserCreateOrEditForm {
   name: string;
   isAdmin: boolean;
   password: string;
+  enterpriseId: string;
 }

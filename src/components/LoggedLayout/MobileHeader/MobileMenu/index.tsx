@@ -8,7 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Links } from "@components/LoggedLayout/Links";
-import { useUser } from "@hooks/useUser";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 interface IMobileMenuProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ interface IMobileMenuProps {
 }
 
 export const MobileMenu = ({ isOpen, onClose }: IMobileMenuProps) => {
-  const { name } = useUser();
+  const { user } = useAuthContext();
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -25,7 +25,7 @@ export const MobileMenu = ({ isOpen, onClose }: IMobileMenuProps) => {
         <DrawerCloseButton />
         <DrawerHeader backgroundColor="green.500">
           <Heading as="h2" size="sm" color="white">
-            Olá, {name}
+            Olá, {user?.name}
           </Heading>
         </DrawerHeader>
 

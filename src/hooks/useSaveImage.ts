@@ -21,10 +21,6 @@ export const useSaveImage = (): IUseSaveImageReturn => {
         await imageService.deleteByKey(oldImageKey).catch(() => {});
       }
 
-      // const compressedFile = await compressFile(file);
-      console.log("image size: ", file.size);
-      console.log("image size in MB: ", file.size / 1024 / 1024);
-
       const { key } = await imageService
         .save({
           file,
