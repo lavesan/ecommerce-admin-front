@@ -2,7 +2,7 @@ import { dbNumberMoneyToNumber } from "@helpers/format.helper";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppContext } from "@hooks/useAppContext";
 import { useSaveImage } from "@hooks/useSaveImage";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import { IPromotion } from "@models/entities/IPromotion";
 import { IPromotionCreateOrEditForm } from "@models/forms/IPromotionCreateOrEditForm";
 import { PromotionService } from "@services/promotion.service";

@@ -1,6 +1,6 @@
 import { AppContext } from "@context/AppContext";
 import { getToken } from "@helpers/token.helper";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import axios, {
   AxiosError,
   AxiosResponse,

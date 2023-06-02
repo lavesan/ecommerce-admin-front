@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, Spinner, Flex, StyleProps } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -11,10 +11,12 @@ import { theme } from "./theme";
 import Router from "routes";
 import { AuthContext } from "@context/AuthContext";
 import { useAuthContextConfig } from "@hooks/useAuthContextConfig";
+import { useAppContextConfig } from "@hooks/useAppContextConfig";
+import { AppDialog } from "@components/AppDialog";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { isLoading, onCloseDialog, dialog, ...appContextConfig } =
+    useAppContextConfig();
   const authContextConfig = useAuthContextConfig();
 
   const appStyle = useMemo(
@@ -41,7 +43,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppContext.Provider value={{ setIsLoading }}>
+        <AppContext.Provider value={appContextConfig}>
           <AuthContext.Provider value={authContextConfig}>
             <ChakraProvider theme={theme}>
               <AxiosInterceptorHOC>
@@ -58,6 +60,7 @@ function App() {
                     </Flex>
                   )}
                   <Router />
+                  <AppDialog {...dialog} onClose={onCloseDialog} />
                 </Flex>
               </AxiosInterceptorHOC>
             </ChakraProvider>

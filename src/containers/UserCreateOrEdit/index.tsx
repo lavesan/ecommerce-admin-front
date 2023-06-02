@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppContext } from "@hooks/useAppContext";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import { IUser } from "@models/entities/IUser";
 import { IUserCreateOrEditForm } from "@models/forms/IUserCreateOrEditForm";
 import { UserService } from "@services/user.service";

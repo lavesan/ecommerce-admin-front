@@ -1,11 +1,16 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
+  Button,
   Card,
+  Flex,
   Heading,
   Radio,
   RadioGroup,
   Stack,
   Text,
 } from "@chakra-ui/react";
+
 import { AppLabelValue } from "@components/AppLabelValue";
 import { OrderStatus } from "@enums/OrderStatus.enum";
 import {
@@ -17,25 +22,77 @@ import {
 import { useAppContext } from "@hooks/useAppContext";
 import { IOrder } from "@models/entities/IOrder";
 import { OrderService } from "@services/order.service";
-import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useAppToast } from "@hooks/useAppToast";
 
 const OrderView = () => {
   const orderService = OrderService.getInstance();
 
   const { orderId } = useParams();
 
-  const { setIsLoading } = useAppContext();
+  const { setIsLoading, showDialog } = useAppContext();
+
+  const { showToast } = useAppToast();
 
   const [status, setStatus] = useState<OrderStatus>();
 
   const [order, setOrder] = useState<IOrder>({} as IOrder);
 
+  const disableUpdateStatus = useMemo(() => {
+    const activeStatuses = [
+      OrderStatus.TO_APPROVE,
+      OrderStatus.DOING,
+      OrderStatus.SENDING,
+    ];
+
+    return !activeStatuses.includes(order.status);
+  }, [order.status]);
+
   const onStatusChange = async (newStatus: OrderStatus) => {
     if (orderId) {
-      await orderService.updateStatus(orderId, { status: newStatus });
-      onInit();
+      try {
+        await orderService.updateStatus(orderId, { status: newStatus });
+        await onInit();
+      } catch {
+        showToast({
+          status: "error",
+          title: "Aconteceu um erro ao atualizar o status",
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
+  };
+
+  const cancelOrderReq = async () => {
+    if (orderId) {
+      await orderService
+        .updateStatus(orderId, {
+          status: OrderStatus.CANCELED,
+        })
+        .then(async () => {
+          showToast({
+            status: "success",
+            title: "Pedido cancelado",
+          });
+          await onInit();
+        })
+        .catch(() => {
+          showToast({
+            status: "error",
+            title: "Aconteceu um erro ao atualizar o status",
+          });
+        })
+        .finally(() => setIsLoading(false));
+    }
+  };
+
+  const onShowDialog = () => {
+    showDialog({
+      title: "Cancelar pedido",
+      description: "Esta ação cancelará o pedido, tem certeza?",
+      okText: "Efetuar o cancelamento",
+      onConfirm: cancelOrderReq,
+    });
   };
 
   const onInit = useCallback(async () => {
@@ -55,10 +112,27 @@ const OrderView = () => {
 
   return (
     <>
-      <Heading as="h1" size="lg" marginBottom={4}>
-        Pedido
-      </Heading>
-      <RadioGroup onChange={onStatusChange} value={status}>
+      <Flex
+        justifyContent="space-between"
+        flexDirection={["column", "row"]}
+        gap={2}
+      >
+        <Heading as="h1" size="lg" marginBottom={4}>
+          Pedido
+        </Heading>
+        <Button
+          colorScheme="red"
+          onClick={onShowDialog}
+          isDisabled={disableUpdateStatus}
+        >
+          Cancelar pedido
+        </Button>
+      </Flex>
+      <RadioGroup
+        onChange={onStatusChange}
+        value={status}
+        isDisabled={disableUpdateStatus}
+      >
         <Stack direction="row">
           <Radio
             value={OrderStatus.TO_APPROVE}
@@ -81,9 +155,7 @@ const OrderView = () => {
       />
       <AppLabelValue
         label="Valor"
-        value={maskMoney(
-          dbNumberMoneyToNumber(order.freightValue + order.productsValue)
-        )}
+        value={maskMoney(order.freightValue + order.productsValue)}
       />
       <AppLabelValue
         label="Tipo de pagamento"

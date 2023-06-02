@@ -10,7 +10,7 @@ import { AppSelect } from "@components/AppSelect";
 import { AppInput } from "@components/AppInput";
 import { EnterpriseService } from "@services/enterprise.service";
 import { useAppContext } from "@hooks/useAppContext";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import {
   citiesOptions,
   districtOptions,

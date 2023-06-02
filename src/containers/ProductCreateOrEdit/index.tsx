@@ -9,7 +9,7 @@ import { AppImageInput } from "@components/AppImageInput";
 import { AppSelect } from "@components/AppSelect";
 import { AppInput } from "@components/AppInput";
 import { useAppContext } from "@hooks/useAppContext";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import { additionaCategoryTypeOptions } from "@helpers/select.helper";
 import { IProductCreateOrEditForm } from "@models/forms/IProductCreateOrEditForm";
 import { AppCurrencyInput } from "@components/AppCurrencyInput";

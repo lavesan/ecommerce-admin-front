@@ -8,7 +8,7 @@ import { validationSchema } from "./validations";
 import { AppImageInput } from "@components/AppImageInput";
 import { AppInput } from "@components/AppInput";
 import { useAppContext } from "@hooks/useAppContext";
-import { useAppToast } from "@hooks/useSuccessToast";
+import { useAppToast } from "@hooks/useAppToast";
 import { AppCheckbox } from "@components/AppCheckbox";
 import { useSaveImage } from "@hooks/useSaveImage";
 import { ICategoryCreateOrEditForm } from "@models/forms/ICategoryCreateOrEditForm";

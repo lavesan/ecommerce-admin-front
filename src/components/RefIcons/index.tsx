@@ -9,6 +9,7 @@ import {
   HiServer,
   HiShoppingBag,
   HiShoppingCart,
+  HiOutlineTrash,
 } from "react-icons/hi";
 
 export const HiPencilRef = forwardRef((props, ref) => <HiPencil {...props} />);
@@ -27,4 +28,7 @@ export const AiOutlinePoweroffRef = forwardRef((props, ref) => (
 ));
 export const HiOutlineMenuRef = forwardRef((props, ref) => (
   <HiOutlineMenu {...props} />
+));
+export const HiOutlineTrashRef = forwardRef((props, ref) => (
+  <HiOutlineTrash {...props} />
 ));
