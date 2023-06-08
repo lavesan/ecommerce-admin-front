@@ -1,4 +1,5 @@
 import { server } from "@config/axios.config";
+import { IActiveOrdersCountResponse } from "@models/IActiveOrdersCountResponse";
 import { IPaginateOrderFilter } from "@models/IPaginateOrderFilter";
 import { IUpdateOrderRequest } from "@models/IUpdateOrderRequest";
 import { IOrder } from "@models/entities/IOrder";
@@ -26,6 +27,13 @@ export class OrderService {
 
   async updateStatus(id: string, body: IUpdateOrderRequest): Promise<boolean> {
     const res = await server.patch<boolean>(`/order/${id}`, body);
+    return res.data;
+  }
+
+  async activeOrdersCount(): Promise<IActiveOrdersCountResponse> {
+    const res = await server.get<IActiveOrdersCountResponse>(
+      "/order/active-orders"
+    );
     return res.data;
   }
 

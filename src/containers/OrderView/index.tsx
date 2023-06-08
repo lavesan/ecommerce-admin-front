@@ -14,7 +14,6 @@ import {
 import { AppLabelValue } from "@components/AppLabelValue";
 import { OrderStatus } from "@enums/OrderStatus.enum";
 import {
-  dbNumberMoneyToNumber,
   maskMoney,
   maskPhone,
   translatePaymentType,
@@ -86,7 +85,7 @@ const OrderView = () => {
     }
   };
 
-  const onShowDialog = () => {
+  const onShowCancelDialog = () => {
     showDialog({
       title: "Cancelar pedido",
       description: "Esta ação cancelará o pedido, tem certeza?",
@@ -122,7 +121,7 @@ const OrderView = () => {
         </Heading>
         <Button
           colorScheme="red"
-          onClick={onShowDialog}
+          onClick={onShowCancelDialog}
           isDisabled={disableUpdateStatus}
         >
           Cancelar pedido

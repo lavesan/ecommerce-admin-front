@@ -12,6 +12,8 @@ import {
 import { SidebarLink } from "../Sidebar/SidebarLink";
 import { useLocation } from "react-router-dom";
 import { useAuthContext } from "@hooks/useAuthContext";
+import { IconBadge } from "@components/IconBadge";
+import { useOrdersContext } from "@hooks/useOrdersContext";
 
 interface ILinksProps {
   onLinkClick?: VoidFunction;
@@ -21,6 +23,8 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
   const { pathname } = useLocation();
 
   const { isAdmin } = useAuthContext();
+
+  const { count } = useOrdersContext();
 
   return (
     <>
@@ -44,14 +48,16 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
           onClick={onLinkClick}
         />
       )}
-      <SidebarLink
-        icon={HiOfficeBuilding}
-        to="/empresas"
-        label="Empresas"
-        isActive={pathname.includes("/empresas")}
-        marginBottom={1}
-        onClick={onLinkClick}
-      />
+      <IconBadge text={count}>
+        <SidebarLink
+          icon={HiOfficeBuilding}
+          to="/empresas"
+          label="Empresas"
+          isActive={pathname.includes("/empresas")}
+          marginBottom={1}
+          onClick={onLinkClick}
+        />
+      </IconBadge>
     </>
   );
 };

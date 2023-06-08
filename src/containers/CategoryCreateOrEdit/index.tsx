@@ -5,16 +5,13 @@ import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./validations";
-import { AppImageInput } from "@components/AppImageInput";
 import { AppInput } from "@components/AppInput";
 import { useAppContext } from "@hooks/useAppContext";
 import { useAppToast } from "@hooks/useAppToast";
 import { AppCheckbox } from "@components/AppCheckbox";
-import { useSaveImage } from "@hooks/useSaveImage";
 import { ICategoryCreateOrEditForm } from "@models/forms/ICategoryCreateOrEditForm";
 import { ICategory } from "@models/entities/ICategory";
 import { CategoryService } from "@services/category.service";
-import { getImgUrl } from "@helpers/image.helper";
 
 const CategoryCreateOrEdit = () => {
   const categoryService = CategoryService.getInstance();
@@ -23,10 +20,6 @@ const CategoryCreateOrEdit = () => {
 
   const { setIsLoading } = useAppContext();
   const { showToast } = useAppToast();
-
-  const [imageKey, setImageKey] = useState("");
-
-  const { saveImage } = useSaveImage();
 
   const [category, setCategory] = useState<ICategory>({} as ICategory);
 
@@ -40,9 +33,6 @@ const CategoryCreateOrEdit = () => {
     };
   }, [category]);
 
-  const [image, setImage] = useState<File>();
-  const [imageChanged, setImageChanged] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -55,46 +45,23 @@ const CategoryCreateOrEdit = () => {
     defaultValues: categoryForm,
   });
 
-  const onImageChange = (file: File) => {
-    setImageChanged(true);
-    setImage(file);
-  };
-
-  const mountBody = (
-    { ...body }: ICategoryCreateOrEditForm,
-    imageKey: string
-  ) => ({
+  const mountBody = ({ ...body }: ICategoryCreateOrEditForm) => ({
     ...body,
-    imageKey,
     enterpriseId: enterpriseId || "",
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    let imageKey = category.imageKey;
-
-    if ((imageChanged && !image) || (!imageKey && !categoryId && !image)) {
-      return showToast({ title: "Faça o upload da imagem", status: "error" });
-    }
-
-    if (imageChanged && image) {
-      imageKey = await saveImage({
-        oldImageKey: imageKey,
-        preffix: "enterprise",
-        file: image,
-      });
-    }
-
     let successMsg = "";
 
     if (categoryId) {
       await categoryService
-        .update(categoryId, mountBody(values, imageKey))
+        .update(categoryId, mountBody(values))
         .finally(() => setIsLoading(false));
 
       successMsg = "Categoria editada";
     } else {
       await categoryService
-        .create(mountBody(values, imageKey))
+        .create(mountBody(values))
         .finally(() => setIsLoading(false));
 
       successMsg = "Categoria criada";
@@ -109,7 +76,6 @@ const CategoryCreateOrEdit = () => {
         .finally(() => setIsLoading(false));
 
       setCategory(res);
-      setImageKey(res.imageKey);
     }
   }, []);
 
@@ -126,12 +92,6 @@ const CategoryCreateOrEdit = () => {
       <Heading as="h2" size="lg">
         {categoryId ? "Editar" : "Criar"} categoria
       </Heading>
-      <Flex width={["100%", "300px"]} marginBlock={4}>
-        <AppImageInput
-          imageSrc={getImgUrl(imageKey)}
-          onImageChange={onImageChange}
-        />
-      </Flex>
       <Flex marginBottom={8} marginTop={4}>
         <AppCheckbox<ICategoryCreateOrEditForm>
           label="Desabilitar"

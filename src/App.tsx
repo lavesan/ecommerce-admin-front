@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, Spinner, Flex, StyleProps } from "@chakra-ui/react";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { QueryClientProvider } from "react-query";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+// import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { queryClient } from "@config/query-client.config";
 import { AppContext } from "@context/AppContext";
 import { AxiosInterceptorHOC } from "@config/axios.config";
 import { theme } from "./theme";
@@ -13,11 +13,17 @@ import { AuthContext } from "@context/AuthContext";
 import { useAuthContextConfig } from "@hooks/useAuthContextConfig";
 import { useAppContextConfig } from "@hooks/useAppContextConfig";
 import { AppDialog } from "@components/AppDialog";
+import { OrdersContext } from "@context/OrdersContext";
+import { useOrdersContextConfig } from "@hooks/useOrdersContextConfig";
 
 function App() {
+  // const [queryClient] = useState(() => new QueryClient());
+  const queryClient = new QueryClient();
+
   const { isLoading, onCloseDialog, dialog, ...appContextConfig } =
     useAppContextConfig();
   const authContextConfig = useAuthContextConfig();
+  const ordersContextConfig = useOrdersContextConfig();
 
   const appStyle = useMemo(
     () => (isLoading ? { opacity: 0.7 } : {}),
@@ -45,25 +51,27 @@ function App() {
       <BrowserRouter>
         <AppContext.Provider value={appContextConfig}>
           <AuthContext.Provider value={authContextConfig}>
-            <ChakraProvider theme={theme}>
-              <AxiosInterceptorHOC>
-                <Flex
-                  position="relative"
-                  width="100%"
-                  height="100%"
-                  minHeight="100vh"
-                  {...appStyle}
-                >
-                  {isLoading && (
-                    <Flex {...loadingStyle} position="absolute">
-                      <Spinner size="xl" />
-                    </Flex>
-                  )}
-                  <Router />
-                  <AppDialog {...dialog} onClose={onCloseDialog} />
-                </Flex>
-              </AxiosInterceptorHOC>
-            </ChakraProvider>
+            <OrdersContext.Provider value={ordersContextConfig}>
+              <ChakraProvider theme={theme}>
+                <AxiosInterceptorHOC>
+                  <Flex
+                    position="relative"
+                    width="100%"
+                    height="100%"
+                    minHeight="100vh"
+                    {...appStyle}
+                  >
+                    {isLoading && (
+                      <Flex {...loadingStyle} position="absolute">
+                        <Spinner size="xl" />
+                      </Flex>
+                    )}
+                    <Router />
+                    <AppDialog {...dialog} onClose={onCloseDialog} />
+                  </Flex>
+                </AxiosInterceptorHOC>
+              </ChakraProvider>
+            </OrdersContext.Provider>
           </AuthContext.Provider>
         </AppContext.Provider>
       </BrowserRouter>

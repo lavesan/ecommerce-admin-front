@@ -5,7 +5,6 @@ export interface ICategory {
   id: string;
   name: string;
   description: string;
-  imageKey: string;
   isDisabled: boolean;
   created_at: Date;
   updated_at?: Date;
