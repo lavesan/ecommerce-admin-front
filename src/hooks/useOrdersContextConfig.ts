@@ -1,9 +1,9 @@
 import { useActiveOrdersCountQuery } from "./fetch/useActiveOrdersCountQuery";
 
 export const useOrdersContextConfig = () => {
-  // const { data: countData } = useActiveOrdersCountQuery();
+  const { data: countData } = useActiveOrdersCountQuery();
 
   return {
-    count: 0,
+    count: countData?.count || 0,
   };
 };

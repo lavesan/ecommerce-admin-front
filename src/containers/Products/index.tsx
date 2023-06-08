@@ -83,6 +83,7 @@ const Products = () => {
   ];
 
   const paginateProducts = async () => {
+    setIsLoading(true);
     const result = await productService
       .paginate({ categoryId, ...filter })
       .finally(() => setIsLoading(false));

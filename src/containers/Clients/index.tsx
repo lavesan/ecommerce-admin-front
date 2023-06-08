@@ -84,6 +84,7 @@ const Clients = () => {
   ];
 
   const paginateClients = async () => {
+    setIsLoading(true);
     const result = await clientService
       .paginate(filter)
       .finally(() => setIsLoading(false));

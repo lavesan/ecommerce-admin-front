@@ -173,34 +173,44 @@ const EnterpriseCreateOrEdit = () => {
     let imageKey = enterprise.imageKey;
     let bannerKey = enterprise.bannerKey;
 
-    if ((imageChanged && !image) || (!imageKey && !id && !image)) {
-      return showToast({ title: "Faça o upload da logo", status: "error" });
-    }
+    setIsLoading(true);
 
-    if (
-      (bannerImageChanged && !bannerImage) ||
-      (!bannerKey && !id && !bannerImage)
-    ) {
-      return showToast({
-        title: "Faça o upload da imagem de banner",
+    try {
+      if ((imageChanged && !image) || (!imageKey && !id && !image)) {
+        return showToast({ title: "Faça o upload da logo", status: "error" });
+      }
+
+      if (
+        (bannerImageChanged && !bannerImage) ||
+        (!bannerKey && !id && !bannerImage)
+      ) {
+        return showToast({
+          title: "Faça o upload da imagem de banner",
+          status: "error",
+        });
+      }
+
+      if (imageChanged && image) {
+        imageKey = await saveImage({
+          oldImageKey: imageKey,
+          preffix: "enterprise_logo",
+          file: image,
+        });
+      }
+
+      if (bannerImageChanged && bannerImage) {
+        bannerKey = await saveImage({
+          oldImageKey: bannerKey,
+          preffix: "enterprise_banner",
+          file: bannerImage,
+        });
+      }
+    } catch {
+      showToast({
         status: "error",
+        title: "Aconteceu um erro ao salvar as novas imagens",
       });
-    }
-
-    if (imageChanged && image) {
-      imageKey = await saveImage({
-        oldImageKey: imageKey,
-        preffix: "enterprise_logo",
-        file: image,
-      });
-    }
-
-    if (bannerImageChanged && bannerImage) {
-      bannerKey = await saveImage({
-        oldImageKey: bannerKey,
-        preffix: "enterprise_banner",
-        file: bannerImage,
-      });
+      return;
     }
 
     let successMsg = "";

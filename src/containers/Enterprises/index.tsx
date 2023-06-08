@@ -112,6 +112,7 @@ const Enterprises = () => {
   ];
 
   const paginateEnterprises = async () => {
+    setIsLoading(true);
     const result = await enterpriseService
       .paginate(filter)
       .finally(() => setIsLoading(false));

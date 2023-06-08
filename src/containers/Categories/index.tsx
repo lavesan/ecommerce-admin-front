@@ -76,6 +76,7 @@ const Categories = () => {
   ];
 
   const paginateCategories = async () => {
+    setIsLoading(true);
     const result = await categoryService
       .paginate({ enterpriseId: id, ...filter })
       .finally(() => setIsLoading(false));

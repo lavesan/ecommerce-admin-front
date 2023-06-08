@@ -3,10 +3,14 @@ import { useState } from "react";
 import { MobileMenu } from "./MobileMenu";
 import { useAuthContext } from "@hooks/useAuthContext";
 import { AiOutlinePoweroffRef, HiOutlineMenuRef } from "@components/RefIcons";
+import { IconBadge } from "@components/IconBadge";
+import { useOrdersContext } from "@hooks/useOrdersContext";
 
 export const MobileHeader = () => {
   const { logout } = useAuthContext();
   const [openMenu, setOpenMenu] = useState(false);
+
+  const { count } = useOrdersContext();
 
   return (
     <>
@@ -20,17 +24,20 @@ export const MobileHeader = () => {
         top={0}
         zIndex={2}
       >
-        <IconButton
-          as={HiOutlineMenuRef}
-          aria-label="Menu"
-          background="none"
-          color="white"
-          size="sm"
-          onClick={() => setOpenMenu(true)}
-          _hover={{
-            background: "none",
-          }}
-        />
+        <IconBadge text={count}>
+          <IconButton
+            as={HiOutlineMenuRef}
+            aria-label="Menu"
+            background="none"
+            color="white"
+            size="sm"
+            cursor="pointer"
+            onClick={() => setOpenMenu(true)}
+            _hover={{
+              background: "none",
+            }}
+          />
+        </IconBadge>
         <IconButton
           as={AiOutlinePoweroffRef}
           aria-label="Logout"

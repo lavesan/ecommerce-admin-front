@@ -48,6 +48,7 @@ const OrderView = () => {
 
   const onStatusChange = async (newStatus: OrderStatus) => {
     if (orderId) {
+      setIsLoading(true);
       try {
         await orderService.updateStatus(orderId, { status: newStatus });
         await onInit();
@@ -64,6 +65,7 @@ const OrderView = () => {
 
   const cancelOrderReq = async () => {
     if (orderId) {
+      setIsLoading(true);
       await orderService
         .updateStatus(orderId, {
           status: OrderStatus.CANCELED,
@@ -96,6 +98,7 @@ const OrderView = () => {
 
   const onInit = useCallback(async () => {
     if (orderId) {
+      setIsLoading(true);
       const res = await orderService
         .findById(orderId)
         .finally(() => setIsLoading(false));

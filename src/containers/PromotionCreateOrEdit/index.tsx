@@ -99,16 +99,26 @@ const PromotionCreateOrEdit = () => {
   const onSubmit = handleSubmit(async (values) => {
     let imageKey = promotion.imageKey;
 
-    if ((imageChanged && !image) || (!imageKey && !promotionId && !image)) {
-      return showToast({ title: "Faça o upload da imagem", status: "error" });
-    }
+    setIsLoading(true);
 
-    if (imageChanged && image) {
-      imageKey = await saveImage({
-        oldImageKey: imageKey,
-        preffix: "promotion",
-        file: image,
+    try {
+      if ((imageChanged && !image) || (!imageKey && !promotionId && !image)) {
+        return showToast({ title: "Faça o upload da imagem", status: "error" });
+      }
+
+      if (imageChanged && image) {
+        imageKey = await saveImage({
+          oldImageKey: imageKey,
+          preffix: "promotion",
+          file: image,
+        });
+      }
+    } catch {
+      showToast({
+        status: "error",
+        title: "Aconteceu um erro ao salvar a nova imagem",
       });
+      return;
     }
 
     let successMsg = "";
@@ -131,6 +141,7 @@ const PromotionCreateOrEdit = () => {
 
   const onInit = useCallback(async () => {
     if (promotionId) {
+      setIsLoading(true);
       const res = await promotionService
         .findById(promotionId)
         .finally(() => setIsLoading(false));

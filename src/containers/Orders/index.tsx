@@ -1,48 +1,37 @@
 import { Badge, Heading } from "@chakra-ui/react";
 import { AppTableActions } from "@components/AppTableActions";
 import { HiEyeRef } from "@components/RefIcons";
-import { useAppContext } from "@hooks/useAppContext";
 import { useResponsive } from "@hooks/useResponsive";
 import { IPaginateOrderFilter } from "@models/IPaginateOrderFilter";
 import { ITableColumn } from "@models/components/ITableColumn";
-import {
-  IPaginationRequest,
-  IPaginationResponse,
-} from "@models/pagination.models";
-import { OrderService } from "@services/order.service";
-import { useEffect, useState } from "react";
+import { IPaginationRequest } from "@models/pagination.models";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FilterForm } from "./FilterForm";
 import { AppResponsiveTable } from "@components/AppResponsiveTable";
-import {
-  maskMoney,
-  maskPhone,
-  translateOrderStatus,
-  translatePaymentType,
-} from "@helpers/format.helper";
-import { IFormatPaginateOrder } from "@models/IFormatPaginateOrder";
-import { maskDateTime } from "@helpers/date.helper";
 import { AppTable } from "@components/AppTable";
 import { OrderCard } from "./OrderCard";
+import { usePaginateOrdersQuery } from "@hooks/fetch/usePaginateOrdersQuery";
 
 const Orders = () => {
-  const orderService = OrderService.getInstance();
-
   const { enterpriseId, clientId } = useParams();
 
   const { isMobile } = useResponsive();
 
   const navigate = useNavigate();
 
-  const { setIsLoading } = useAppContext();
-
-  const [data, setData] = useState<IPaginationResponse<IFormatPaginateOrder>>();
   const [filter, setFilter] = useState<
     IPaginationRequest & Partial<IPaginateOrderFilter>
   >({
     page: 0,
     size: 10,
   } as IPaginationRequest & Partial<IPaginateOrderFilter>);
+
+  const { data } = usePaginateOrdersQuery({
+    enterpriseId,
+    clientId,
+    ...filter,
+  });
 
   const columns: ITableColumn[] = [
     {
@@ -93,43 +82,6 @@ const Orders = () => {
     },
   ];
 
-  const paginateOrders = async () => {
-    const result = await orderService
-      .paginate({
-        enterpriseId,
-        clientId,
-        ...filter,
-      })
-      .finally(() => setIsLoading(false));
-
-    const mappedResult = {
-      ...result,
-      data: result.data.map(
-        ({
-          created_at,
-          productsValue,
-          freightValue,
-          status,
-          paymentType,
-          client,
-          ...elem
-        }) => ({
-          ...elem,
-          clientName: client?.name || "",
-          phone: maskPhone(client?.phone || ""),
-          paymentType: translatePaymentType(paymentType),
-          status: translateOrderStatus(status),
-          totalValue: maskMoney(freightValue + productsValue),
-          productsValue: maskMoney(productsValue),
-          freightValue: maskMoney(freightValue),
-          created_at: maskDateTime(created_at),
-        })
-      ),
-    };
-
-    setData(mappedResult);
-  };
-
   const onFilter = (filter: IPaginateOrderFilter) => {
     setFilter({
       page: 0,
@@ -149,10 +101,6 @@ const Orders = () => {
     if (enterpriseId) navigate(`/empresas/${enterpriseId}/pedidos/${orderId}`);
     if (clientId) navigate(`/clientes/${clientId}/pedidos/${orderId}`);
   };
-
-  useEffect(() => {
-    paginateOrders();
-  }, [filter]);
 
   return (
     <>

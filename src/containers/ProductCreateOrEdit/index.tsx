@@ -157,16 +157,26 @@ const ProductCreateOrEdit = () => {
   const onSubmit = handleSubmit(async (values) => {
     let imageKey = product.imageKey;
 
-    if ((imageChanged && !image) || (!imageKey && !productId && !image)) {
-      return showToast({ title: "Faça o upload da imagem", status: "error" });
-    }
+    setIsLoading(true);
 
-    if (imageChanged && image) {
-      imageKey = await saveImage({
-        oldImageKey: imageKey,
-        preffix: "product",
-        file: image,
+    try {
+      if ((imageChanged && !image) || (!imageKey && !productId && !image)) {
+        return showToast({ title: "Faça o upload da imagem", status: "error" });
+      }
+
+      if (imageChanged && image) {
+        imageKey = await saveImage({
+          oldImageKey: imageKey,
+          preffix: "product",
+          file: image,
+        });
+      }
+    } catch {
+      showToast({
+        status: "error",
+        title: "Aconteceu um erro ao salvar as novas imagens",
       });
+      return;
     }
 
     let successMsg = "";
@@ -189,6 +199,7 @@ const ProductCreateOrEdit = () => {
 
   const onInit = useCallback(async () => {
     if (productId) {
+      setIsLoading(true);
       const res = await productService
         .findById(productId)
         .finally(() => setIsLoading(false));

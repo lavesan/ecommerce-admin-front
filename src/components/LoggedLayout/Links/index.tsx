@@ -36,6 +36,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
           isActive={pathname.includes("/usuarios")}
           marginBottom={1}
           onClick={onLinkClick}
+          width="100%"
         />
       )}
       {isAdmin && (
@@ -46,6 +47,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
           isActive={pathname.includes("/clientes")}
           marginBottom={1}
           onClick={onLinkClick}
+          width="100%"
         />
       )}
       <IconBadge text={count}>
@@ -56,6 +58,7 @@ export const Links = ({ onLinkClick = () => {} }: ILinksProps) => {
           isActive={pathname.includes("/empresas")}
           marginBottom={1}
           onClick={onLinkClick}
+          width="100%"
         />
       </IconBadge>
     </>

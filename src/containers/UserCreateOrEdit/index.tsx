@@ -55,6 +55,8 @@ const UserCreateOrEdit = () => {
   const onSubmit = handleSubmit(async (values) => {
     let successMsg = "";
 
+    setIsLoading(true);
+
     if (userId) {
       await userService
         .update(userId, mountBody(values))
@@ -73,6 +75,7 @@ const UserCreateOrEdit = () => {
 
   const onInit = useCallback(async () => {
     if (userId) {
+      setIsLoading(true);
       const res = await userService
         .findById(userId)
         .finally(() => setIsLoading(false));

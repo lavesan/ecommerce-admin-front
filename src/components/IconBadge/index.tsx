@@ -14,6 +14,7 @@ export const IconBadge = ({ text, children }: IIconBadgeProps) => {
           position="absolute"
           top={-1}
           left={-1}
+          zIndex={10}
           background="red.700"
           borderRadius="50%"
           color="white"

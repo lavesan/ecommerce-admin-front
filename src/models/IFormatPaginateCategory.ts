@@ -5,7 +5,6 @@ export interface IFormatPaginateCategory {
   id: string;
   name: string;
   description: string;
-  imageKey: string;
   isDisabled: string;
   created_at: string;
   updated_at?: Date;

@@ -27,13 +27,10 @@ interface IAxiosInterceptorHOCProps {
 export const AxiosInterceptorHOC = ({
   children,
 }: IAxiosInterceptorHOCProps) => {
-  const { setIsLoading } = useContext(AppContext);
   const { showToast } = useAppToast();
 
   useEffect(() => {
     const successReqInterceptor = (config: InternalAxiosRequestConfig) => {
-      setIsLoading(true);
-
       const token = getToken();
 
       const headers = config.headers || {};
@@ -72,7 +69,7 @@ export const AxiosInterceptorHOC = ({
     //   server.interceptors.request.eject(reqInterceptor);
     //   server.interceptors.response.eject(resInterceptor);
     // };
-  }, [setIsLoading]);
+  }, []);
 
   return children;
 };

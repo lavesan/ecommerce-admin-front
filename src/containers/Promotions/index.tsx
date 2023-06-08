@@ -72,6 +72,7 @@ const Promotions = () => {
   ];
 
   const paginatePromotions = async () => {
+    setIsLoading(true);
     const result = await promotionService
       .paginate({ enterpriseId: id, ...filter })
       .finally(() => setIsLoading(false));

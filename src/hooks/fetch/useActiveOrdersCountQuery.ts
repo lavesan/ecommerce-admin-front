@@ -1,25 +1,21 @@
-import { useQuery } from "react-query";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
 
-import { useAppContext } from "../useAppContext";
 import { OrderService } from "@services/order.service";
 import { IActiveOrdersCountResponse } from "@models/IActiveOrdersCountResponse";
 
-export const useActiveOrdersCountQuery = () => {
+export const useActiveOrdersCountQuery = (): UseQueryResult<
+  IActiveOrdersCountResponse,
+  unknown
+> => {
   const orderService = OrderService.getInstance();
 
-  const { setIsLoading } = useAppContext();
-
-  const fetchActiveOrdersCount =
-    async (): Promise<IActiveOrdersCountResponse> => {
-      return orderService.activeOrdersCount();
-    };
-
-  return useQuery({
+  const query = useQuery({
     queryKey: ["orders-count"],
-    queryFn: fetchActiveOrdersCount,
-    onSettled() {
-      setIsLoading(false);
+    queryFn: async (): Promise<IActiveOrdersCountResponse> => {
+      return orderService.activeOrdersCount();
     },
     refetchInterval: 0.5 * 60000,
   });
+
+  return query;
 };

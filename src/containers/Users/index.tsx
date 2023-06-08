@@ -72,6 +72,7 @@ const Users = () => {
   ];
 
   const paginateUsers = async () => {
+    setIsLoading(true);
     const result = await userService
       .paginate(filter)
       .finally(() => setIsLoading(false));

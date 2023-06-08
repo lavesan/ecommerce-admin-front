@@ -30,6 +30,7 @@ const Login = () => {
   });
 
   const onSubmit = handleSubmit(async (form) => {
+    setIsLoading(true);
     const res = await userService
       .login(form)
       .finally(() => setIsLoading(false));
