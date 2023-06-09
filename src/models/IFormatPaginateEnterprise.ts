@@ -20,6 +20,7 @@ export interface IFormatPaginateEnterprise {
   state: string;
   city: string;
   imageKey: string;
+  openOrdersCount: number;
   created_at: string;
   categories?: ICategory[];
   orders?: IOrder[];

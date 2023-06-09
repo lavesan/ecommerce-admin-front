@@ -1,6 +1,7 @@
 import { server } from "@config/axios.config";
 import { ICreateEnterpriseRequest } from "@models/ICreateEnterpriseRequest";
 import { IPaginateEnterpriseFilter } from "@models/IPaginateEnterpriseFilter";
+import { IPaginateEnterpriseResponse } from "@models/IPaginateEnterpriseResponse";
 import { IUpdateEnterpriseRequest } from "@models/IUpdateEnterpriseRequest";
 import { IEnterprise } from "@models/entities/IEnterprise";
 import {
@@ -13,13 +14,10 @@ export class EnterpriseService {
 
   async paginate(
     params: IPaginationRequest & Partial<IPaginateEnterpriseFilter>
-  ): Promise<IPaginationResponse<IEnterprise>> {
-    const res = await server.get<IPaginationResponse<IEnterprise>>(
-      "/enterprise",
-      {
-        params,
-      }
-    );
+  ): Promise<IPaginateEnterpriseResponse> {
+    const res = await server.get<IPaginateEnterpriseResponse>("/enterprise", {
+      params,
+    });
     return res.data;
   }
 

@@ -1,5 +1,6 @@
 import { Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { AppLabelValue } from "@components/AppLabelValue";
+import { IconBadge } from "@components/IconBadge";
 import {
   HiGiftRef,
   HiPencilRef,
@@ -19,6 +20,7 @@ export const EnterpriseCard = ({
   id,
   cnpj,
   name,
+  openOrdersCount,
   created_at,
   goToEdit,
   goToCategories,
@@ -28,18 +30,20 @@ export const EnterpriseCard = ({
   return (
     <Card padding={4} marginBottom={4}>
       <Flex flexDir="row" align="center" justify="center" marginBottom={2}>
-        <IconButton
-          as={HiShoppingCartRef}
-          aria-label={`Pedidos-${id}`}
-          onClick={() => goToOrders(id)}
-          cursor="pointer"
-          background="none"
-          size="md"
-          color="green.700"
-          borderRadius="50%"
-          title="Pedidos"
-          padding={2}
-        />
+        <IconBadge text={openOrdersCount}>
+          <IconButton
+            as={HiShoppingCartRef}
+            aria-label={`Pedidos-${id}`}
+            onClick={() => goToOrders(id)}
+            cursor="pointer"
+            background="none"
+            size="md"
+            color="green.700"
+            borderRadius="50%"
+            title="Pedidos"
+            padding={2}
+          />
+        </IconBadge>
         <IconButton
           as={HiServerRef}
           aria-label={`Categorias-${id}`}

@@ -1,18 +1,10 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AppTable } from "@components/AppTable";
-import { maskDate } from "@helpers/date.helper";
-import { maskCnpj } from "@helpers/format.helper";
-import { useAppContext } from "@hooks/useAppContext";
-import { IFormatPaginateEnterprise } from "@models/IFormatPaginateEnterprise";
 import { IPaginateEnterpriseFilter } from "@models/IPaginateEnterpriseFilter";
-import {
-  IPaginationRequest,
-  IPaginationResponse,
-} from "@models/pagination.models";
-import { EnterpriseService } from "@services/enterprise.service";
+import { IPaginationRequest } from "@models/pagination.models";
 import { AppTableActions } from "@components/AppTableActions";
 import { useResponsive } from "@hooks/useResponsive";
 import { AppResponsiveTable } from "@components/AppResponsiveTable";
@@ -26,26 +18,23 @@ import {
   HiShoppingCartRef,
 } from "@components/RefIcons";
 import { useAuthContext } from "@hooks/useAuthContext";
+import { usePaginateEnterprisesQuery } from "@hooks/fetch/usePaginateEnterprisesQuery";
 
 const Enterprises = () => {
-  const enterpriseService = EnterpriseService.getInstance();
-
   const { isMobile } = useResponsive();
 
   const navigate = useNavigate();
 
-  const { setIsLoading } = useAppContext();
-
   const { isAdmin } = useAuthContext();
 
-  const [data, setData] =
-    useState<IPaginationResponse<IFormatPaginateEnterprise>>();
   const [filter, setFilter] = useState<
     IPaginationRequest & Partial<IPaginateEnterpriseFilter>
   >({
     page: 0,
     size: 10,
   } as IPaginationRequest & Partial<IPaginateEnterpriseFilter>);
+
+  const { data } = usePaginateEnterprisesQuery(filter);
 
   const columns: ITableColumn[] = [
     {
@@ -67,7 +56,7 @@ const Enterprises = () => {
     {
       id: "id",
       label: "Ações",
-      accessor: ({ id }) => (
+      accessor: ({ id, openOrdersCount }) => (
         <AppTableActions
           actions={
             isAdmin
@@ -76,6 +65,7 @@ const Enterprises = () => {
                     id,
                     title: "Pedidos",
                     icon: HiShoppingCartRef,
+                    badgeText: openOrdersCount,
                     onClick: () => goToOrders(id),
                   },
                   {
@@ -111,25 +101,6 @@ const Enterprises = () => {
     },
   ];
 
-  const paginateEnterprises = async () => {
-    setIsLoading(true);
-    const result = await enterpriseService
-      .paginate(filter)
-      .finally(() => setIsLoading(false));
-
-    const mappedResult = {
-      ...result,
-      data: result.data.map(({ created_at, cnpj, isDisabled, ...elem }) => ({
-        ...elem,
-        isDisabled: isDisabled ? "Sim" : "Não",
-        cnpj: maskCnpj(cnpj),
-        created_at: maskDate(created_at),
-      })),
-    };
-
-    setData(mappedResult);
-  };
-
   const onFilter = (filter: IPaginateEnterpriseFilter) => {
     setFilter({
       page: 0,
@@ -164,10 +135,6 @@ const Enterprises = () => {
   const goToPromotions = (id: string) => {
     navigate(`/empresas/${id}/promocoes`);
   };
-
-  useEffect(() => {
-    paginateEnterprises();
-  }, [filter]);
 
   return (
     <>
