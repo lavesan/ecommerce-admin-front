@@ -1,15 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import jwt from "jwt-decode";
 
-import { getToken, removeToken, storeToken } from "@helpers/token.helper";
 import { ITokenUser } from "@models/hooks/ITokenUser";
+import {
+  getCredentialsToken,
+  clearCredentials,
+  setCredentialsToken,
+} from "@helpers/auth.helper";
+import { ICredentialsToken } from "@models/ICredentialsToken";
+import { RefreshTokenService } from "@services/refreshToken.service";
 
 export const useAuthContextConfig = () => {
-  const [token, setToken] = useState("");
+  const refreshTokenService = RefreshTokenService.getInstance();
+
+  const [token, setToken] = useState<ICredentialsToken | null>(null);
 
   const user = useMemo<ITokenUser | null>(() => {
     if (token) {
-      const tokenPayload = jwt<ITokenUser>(token);
+      const tokenPayload = jwt<ITokenUser>(token.accessToken);
 
       return tokenPayload;
     }
@@ -21,20 +29,21 @@ export const useAuthContextConfig = () => {
   }, [user]);
 
   const logout = () => {
-    setToken("");
-    removeToken();
+    setToken(null);
+    clearCredentials();
+    refreshTokenService.logout();
   };
 
   useEffect(() => {
-    const storedToken = getToken();
-    if (storedToken) setToken(storedToken);
+    const storedCredentials = getCredentialsToken();
+    if (storedCredentials) setToken(storedCredentials);
   }, []);
 
   return {
     token,
-    setToken: (accessToken: string) => {
-      setToken(accessToken);
-      return storeToken(accessToken);
+    setToken: (credentials: ICredentialsToken) => {
+      setToken(credentials);
+      return setCredentialsToken(credentials);
     },
     user,
     isAdmin,

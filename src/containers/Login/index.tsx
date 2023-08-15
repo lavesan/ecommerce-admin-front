@@ -37,7 +37,7 @@ const Login = () => {
 
     const callbackURL = searchParams.get("callbackURL");
 
-    setToken(res.accessToken);
+    setToken(res);
     navigate(callbackURL ? callbackURL : "/empresas");
   });
 
